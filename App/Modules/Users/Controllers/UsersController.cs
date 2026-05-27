@@ -11,44 +11,28 @@ public class UsersController(UsersService service) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
     {
-        var result = await service.CreateAsync(dto);
-
-        if (!result.IsSuccess)
-            return BadRequest(new { error = result.Error });
-
-        return Created($"api/users/{result.Data!.Id}", result.Data);
+        var user = await service.CreateAsync(dto);
+        return Created($"api/users/{user.Id}", user);
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var result = await service.GetByIdAsync(id);
-
-        if (!result.IsSuccess)
-            return NotFound(new { error = result.Error });
-
-        return Ok(result.Data);
+        var user = await service.GetByIdAsync(id);
+        return Ok(user);
     }
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
     {
-        var result = await service.UpdateAsync(id, dto);
-
-        if (!result.IsSuccess)
-            return NotFound(new { error = result.Error });
-
-        return Ok(result.Data);
+        var user = await service.UpdateAsync(id, dto);
+        return Ok(user);
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await service.DeleteAsync(id);
-
-        if (!result.IsSuccess)
-            return NotFound(new { error = result.Error });
-
+        await service.DeleteAsync(id);
         return NoContent();
     }
 }

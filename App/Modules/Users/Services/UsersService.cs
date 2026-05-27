@@ -1,18 +1,20 @@
 ﻿using NeonVertexApi.App.Core.Database;
 using NeonVertexApi.App.Modules.Users.DTOs;
 using NeonVertexApi.App.Modules.Users.Models;
-using NeonVertexApi.App.Modules.Users.Repositories;
+using NeonVertexApi.App.Shared.Exceptions;
 using NeonVertexApi.App.Shared.Interfaces;
-using NeonVertexApi.App.Shared.Models;
 
 namespace NeonVertexApi.App.Modules.Users.Services;
 
 public class UsersService(IUsersRepository repository, AppDbContext context)
 {
-    public async Task<Result<UserResponse>> CreateAsync(CreateUserDto dto)
+    private const string ErrNotFound = "Usuário não encontrado.";
+    private const string ErrEmailInUse = "Email já está em uso.";
+
+    public async Task<UserResponse> CreateAsync(CreateUserDto dto)
     {
         if (await repository.ExistsByEmailAsync(dto.Email))
-            return Result<UserResponse>.Failure("Email já está em uso.");
+            throw AppException.Conflict(ErrEmailInUse);
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         var user = User.Create(dto.Name, dto.Email, passwordHash);
@@ -20,43 +22,35 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
         await repository.AddAsync(user);
         await context.SaveChangesAsync();
 
-        return Result<UserResponse>.Success(MapToResponse(user));
+        return MapToResponse(user);
     }
 
-    public async Task<Result<UserResponse>> GetByIdAsync(Guid id)
+    public async Task<UserResponse> GetByIdAsync(Guid id)
     {
-        var user = await repository.GetByIdAsync(id);
+        var user = await repository.GetByIdAsync(id) 
+            ?? throw AppException.NotFound(ErrNotFound);
 
-        if (user is null)
-            return Result<UserResponse>.Failure("Usuário não encontrado.");
-
-        return Result<UserResponse>.Success(MapToResponse(user));
+        return MapToResponse(user);
     }
 
-    public async Task<Result<UserResponse>> UpdateAsync(Guid id, UpdateUserDto dto)
+    public async Task<UserResponse> UpdateAsync(Guid id, UpdateUserDto dto)
     {
-        var user = await repository.GetByIdAsync(id);
-
-        if (user is null)
-            return Result<UserResponse>.Failure("Usuário não encontrado.");
+        var user = await repository.GetByIdAsync(id)
+            ?? throw AppException.NotFound(ErrNotFound);
 
         user.UpdateProfile(dto.Name);
         await context.SaveChangesAsync();
 
-        return Result<UserResponse>.Success(MapToResponse(user));
+        return MapToResponse(user);
     }
 
-    public async Task<Result> DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        var user = await repository.GetByIdAsync(id);
-
-        if (user is null)
-            return Result.Failure("Usuário não encontrado.");
+        var user = await repository.GetByIdAsync(id)
+            ?? throw AppException.NotFound(ErrNotFound);
 
         await repository.DeleteAsync(user);
         await context.SaveChangesAsync();
-
-        return Result.Success();
     }
 
     private static UserResponse MapToResponse(User user) => new(
