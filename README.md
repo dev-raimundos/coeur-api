@@ -1,1 +1,339 @@
 # NeonVertexApi
+
+NeonVertexApi é uma API REST de propósito geral desenvolvida para servir de base para projetos pessoais. O objetivo é ter uma fundação sólida, bem estruturada e reutilizável — com autenticação, gerenciamento de usuários e uma arquitetura que escala de forma organizada conforme o projeto cresce, sem a complexidade desnecessária de microserviços.
+
+O projeto foi construído com foco em clareza de código, convenções consistentes e facilidade de extensão. Cada decisão arquitetural foi tomada priorizando a compreensão do que está acontecendo, sem magia excessiva ou abstrações desnecessárias.
+
+---
+
+## Tecnologias
+
+| Tecnologia | Versão | Papel |
+|---|---|---|
+| .NET | 10 | Runtime |
+| ASP.NET Core | 10 | Framework web |
+| PostgreSQL | 17 | Banco de dados |
+| Entity Framework Core | 10 | ORM |
+| Npgsql | 10 | Driver PostgreSQL para EF Core |
+| BCrypt.Net-Next | — | Hash de senhas |
+| Scalar | — | Documentação interativa (OpenAPI) |
+
+---
+
+## Arquitetura
+
+O projeto adota o padrão **Monólito Modular** — uma abordagem que combina a simplicidade operacional de um monólito com a organização e separação de responsabilidades de uma arquitetura modular.
+
+Ao contrário dos microserviços, onde cada domínio é um serviço independente com sua própria infraestrutura, o monólito modular mantém tudo em um único processo mas organiza o código em módulos bem delimitados que se comunicam por interfaces, não por acoplamento direto.
+
+### Por que monólito modular?
+
+- **Simplicidade operacional** — um único artefato para fazer deploy, uma única conexão com o banco, sem latência de rede entre serviços
+- **Organização por domínio** — cada módulo é dono do seu código, sem que outros módulos conheçam seus detalhes internos
+- **Escalabilidade de código** — conforme o projeto cresce, novos módulos são adicionados sem impactar os existentes
+- **Caminho para microserviços** — se um domínio precisar escalar independentemente no futuro, a separação já está feita conceitualmente
+
+### Estrutura de pastas
+
+```
+NeonVertexApi/
+├── App/
+│   ├── Core/                          # Infraestrutura transversal da aplicação
+│   │   ├── Authentication/            # TokenService, CurrentUserService
+│   │   ├── Database/                  # AppDbContext, Migrations
+│   │   │   └── Migrations/
+│   │   ├── Extensions/                # ServiceCollectionExtensions, WebApplicationExtensions
+│   │   ├── Middleware/                # ExceptionMiddleware
+│   │   └── Settings/                  # JwtSettings
+│   │
+│   ├── Shared/                        # Contratos e utilitários compartilhados entre módulos
+│   │   ├── Exceptions/                # AppException com factory methods por status HTTP
+│   │   ├── Interfaces/                # ICurrentUser, IUsersRepository
+│   │   ├── Models/                    # Result<T>, PagedList<T>
+│   │   └── Validators/                # Base de validação
+│   │
+│   └── Modules/                       # Domínios da aplicação
+│       ├── Authentication/            # Login, logout, contexto do usuário autenticado
+│       │   ├── Controllers/
+│       │   ├── DTOs/
+│       │   ├── Services/
+│       │   └── AuthModule.cs
+│       └── Users/                     # Gerenciamento de usuários
+│           ├── Controllers/
+│           ├── DTOs/
+│           ├── Models/
+│           ├── Repositories/
+│           ├── Services/
+│           └── UsersModule.cs
+│
+├── Program.cs
+├── appsettings.json
+├── Dockerfile
+├── compose.yaml
+└── Taskfile.yaml
+```
+
+### Camadas
+
+**Core** contém tudo que é infraestrutura técnica — classes que conversam com o .NET, com o banco, com o pipeline HTTP. Não há regra de negócio aqui. O `AppDbContext` vive aqui, assim como o middleware de exceção e a configuração de autenticação JWT.
+
+**Shared** contém contratos e utilitários que qualquer módulo pode precisar, mas que não pertencem a nenhum módulo específico. A distinção com o `Core` é que o `Shared` não sabe que existe ASP.NET — é C# puro. As interfaces que um módulo expõe para os outros ficam aqui.
+
+**Modules** contém os domínios da aplicação. Cada módulo é fechado internamente e expõe apenas o que precisa através de interfaces declaradas em `Shared`. A comunicação entre módulos acontece sempre por interfaces registradas no container de DI, nunca por acoplamento direto entre implementações.
+
+### Anatomia de um módulo
+
+```
+ModuleName/
+├── Controllers/        # Recebe a request HTTP, delega pro service, retorna a response
+├── DTOs/               # Objetos de entrada (CreateDto, UpdateDto) e saída (NameResponse)
+│                       # DTOs de saída têm método estático FromEntity para mapear da entidade
+├── Models/             # Entidade de domínio com propriedades private set e factory method Create
+│                       # Configuração do EF Core via IEntityTypeConfiguration<T>
+├── Repositories/       # Acesso ao banco via AppDbContext, implementa interface de Shared
+├── Services/           # Regras de negócio, orquestra repository e outras dependências
+└── ModuleNameModule.cs # Extension method que registra tudo do módulo no container de DI
+```
+
+### Fluxo de uma request
+
+```
+HTTP Request
+    └── Controller          # valida entrada, chama service
+        └── Service         # aplica regras de negócio, lança AppException se necessário
+            └── Repository  # consulta ou persiste no banco via EF Core
+        └── Controller      # retorna response com status HTTP adequado
+HTTP Response
+
+Em caso de erro:
+    AppException → ExceptionMiddleware → JSON com { message, toast }
+```
+
+### Tratamento de erros
+
+Erros de negócio são comunicados via `AppException`, uma exception com factory methods semânticos que interrompem o fluxo e são interceptados pelo `ExceptionMiddleware`:
+
+```csharp
+// No service — interrompe o fluxo imediatamente
+throw AppException.NotFound("Usuário não encontrado.");
+throw AppException.Conflict("Email já está em uso.");
+throw AppException.Forbidden("Acesso negado.");
+```
+
+O middleware formata automaticamente a resposta JSON com o contrato de `toast`, consumido pelo interceptor do frontend Angular:
+
+```json
+{
+  "message": "Email já está em uso.",
+  "toast": {
+    "type": "warning",
+    "message": "Email já está em uso."
+  }
+}
+```
+
+O tipo do toast é resolvido automaticamente pela faixa do status HTTP — `error` para 5xx, `warning` para 4xx.
+
+### Autenticação
+
+A autenticação utiliza **JWT armazenado em HTTP-only cookie**, o que significa que o token nunca fica acessível via JavaScript, protegendo contra ataques XSS. O browser envia o cookie automaticamente em cada request, sem necessidade de lógica explícita no frontend além de um interceptor de CORS.
+
+O token expira em 24 horas. Não há refresh token — ao expirar, o usuário precisa fazer login novamente.
+
+---
+
+## Pré-requisitos
+
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- [PostgreSQL 17](https://www.postgresql.org/)
+- [Task](https://taskfile.dev/) *(opcional, para comandos facilitados)*
+- [Docker](https://www.docker.com/) *(opcional, para produção)*
+
+---
+
+## Configuração do ambiente
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/seu-usuario/NeonVertexApi.git
+cd NeonVertexApi
+```
+
+### 2. Configurar variáveis de ambiente
+
+Copie o arquivo de exemplo e preencha com suas credenciais:
+
+```bash
+cp .env.example .env
+```
+
+```env
+POSTGRES_CONNECTION=Host=;Port=5432;Database=;Username=;Password=
+JWT__SECRET=
+JWT__ISSUER=NeonVertexApi
+JWT__AUDIENCE=NeonVertexApi
+JWT__EXPIRATIONHOURS=24
+```
+
+### 3. Configurar User Secrets (desenvolvimento local)
+
+O desenvolvimento local utiliza o mecanismo de User Secrets do .NET, que armazena credenciais fora do repositório em `%APPDATA%\Microsoft\UserSecrets\`:
+
+```bash
+dotnet user-secrets set "ConnectionStrings:Default" "Host=localhost;Port=5432;Database=mydb;Username=postgres;Password=senha"
+dotnet user-secrets set "Jwt:Secret" "seu-secret-com-pelo-menos-32-caracteres"
+```
+
+No Visual Studio, o gerenciador de User Secrets está disponível clicando com o botão direito no projeto → **Manage User Secrets**.
+
+### 4. Restaurar dependências
+
+```bash
+dotnet restore
+```
+
+---
+
+## Banco de dados
+
+As migrations são aplicadas automaticamente ao iniciar a aplicação via `MigrateAsync()` no `Program.cs`. Não é necessário nenhum comando manual em produção.
+
+Para criar uma nova migration após alterar ou adicionar uma entidade:
+
+```bash
+dotnet ef migrations add NomeDaMigration
+```
+
+Para listar o status das migrations:
+
+```bash
+dotnet ef migrations list
+```
+
+Para reverter a última migration:
+
+```bash
+dotnet ef migrations remove
+```
+
+> O EF Core tools precisa estar instalado: `dotnet tool install --global dotnet-ef`
+
+---
+
+## Executando
+
+```bash
+dotnet run
+```
+
+A API estará disponível em:
+
+- `https://localhost:7209`
+- `http://localhost:5148`
+
+A documentação interativa (Scalar) estará disponível em:
+
+- `https://localhost:7209/scalar/v1`
+
+---
+
+## Produção (Docker)
+
+O Dockerfile utiliza multi-stage build — a imagem de produção parte da imagem `aspnet` sem SDK, resultando em uma imagem final enxuta.
+
+Em produção, a API é exposta via **Nginx Proxy Manager** na rede Docker interna, sem expor portas diretamente no host.
+
+### Build e deploy
+
+```bash
+task build    # rebuilda a imagem sem cache
+task up       # sobe em background
+task deploy   # build + up em um comando
+```
+
+### Gerenciamento
+
+```bash
+task logs      # exibe logs em tempo real
+task restart   # reinicia o container
+task shell     # abre shell no container
+task down      # derruba os containers
+```
+
+---
+
+## Padrões de resposta
+
+### Sucesso — recurso retornado
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "name": "João Silva",
+  "email": "joao@email.com",
+  "isActive": true,
+  "isEmailVerified": false,
+  "createdAt": "2026-01-01T00:00:00Z",
+  "updatedAt": null,
+  "lastLoginAt": null
+}
+```
+
+### Erro de negócio (4xx)
+
+```json
+{
+  "message": "Email já está em uso.",
+  "toast": {
+    "type": "warning",
+    "message": "Email já está em uso."
+  }
+}
+```
+
+### Erro interno (5xx)
+
+```json
+{
+  "message": "Erro interno do servidor.",
+  "toast": {
+    "type": "error",
+    "message": "Erro interno do servidor."
+  }
+}
+```
+
+---
+
+## Convenções de código
+
+- Namespaces espelham a estrutura de pastas: `NeonVertexApi.App.{Camada}.{Módulo}`
+- Entidades usam `private set` em todas as propriedades — estado só é alterado por métodos da própria entidade
+- Entidades são criadas via factory method estático `Create`, nunca por construtor público
+- DTOs de saída são `record` imutáveis com método estático `FromEntity` para conversão
+- Erros de negócio usam `AppException` com factory methods semânticos (`NotFound`, `Conflict`, etc.)
+- Todas as datas são armazenadas e retornadas em **UTC**
+- Nomes de tabelas e colunas seguem **snake_case** no banco via `UseSnakeCaseNamingConvention`
+- Cada módulo registra seus próprios serviços via extension method `AddNomeModule`
+
+---
+
+## Adicionando um novo módulo
+
+1. Crie a pasta `App/Modules/NomeModulo` com a estrutura padrão
+2. Declare a entidade em `Models/` com `private set` e factory method `Create`
+3. Configure o mapeamento EF Core via `IEntityTypeConfiguration<T>`
+4. Adicione o `DbSet<Entidade>` no `AppDbContext`
+5. Declare a interface do repository em `Shared/Interfaces/`
+6. Implemente o repository em `Modules/NomeModulo/Repositories/`
+7. Implemente o service em `Modules/NomeModulo/Services/`
+8. Crie o controller em `Modules/NomeModulo/Controllers/`
+9. Registre tudo em `NomeModuloModule.cs` e chame `builder.Services.AddNomeModulo()` no `Program.cs`
+10. Rode `dotnet ef migrations add NomeDaMigration` para criar a migration
+
+---
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.txt) para mais detalhes.
