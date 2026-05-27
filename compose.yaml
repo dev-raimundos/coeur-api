@@ -7,6 +7,10 @@ services:
       - .env
     environment:
       - ConnectionStrings__Default=${POSTGRES_CONNECTION}
+      - Jwt__Secret=${JWT__SECRET}
+      - Jwt__Issuer=${JWT__ISSUER}
+      - Jwt__Audience=${JWT__AUDIENCE}
+      - Jwt__ExpirationHours=${JWT__EXPIRATIONHOURS}
     restart: always
     networks:
       - proxy
