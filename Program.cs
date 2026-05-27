@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NeonVertexApi.App.Core.Database;
 using NeonVertexApi.App.Core.Extensions;
+using NeonVertexApi.App.Modules.Users;
+using Scalar.AspNetCore;
 
 namespace NeonVertexApi;
 
@@ -11,6 +13,7 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddCore(builder.Configuration);
+        builder.Services.AddUsersModule();
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
 
@@ -25,6 +28,7 @@ public static class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.MapScalarApiReference();
         }
 
         app.UseHttpsRedirection();
