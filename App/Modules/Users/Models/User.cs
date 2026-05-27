@@ -9,8 +9,8 @@ public class User
     public bool IsActive { get; private set; }
     public bool IsEmailVerified { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; }
-    public DateTime? LastLoginAt { get; }
+    public DateTime? UpdatedAt { get; private set; }
+    public DateTime? LastLoginAt { get; private set; }
 
     private User() { }
 
@@ -26,5 +26,28 @@ public class User
             IsEmailVerified = false,
             CreatedAt = DateTime.UtcNow
         };
+    }
+
+    public void UpdateProfile(string name)
+    {
+        Name = name;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void VerifyEmail()
+    {
+        IsEmailVerified = true;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void RecordLogin()
+    {
+        LastLoginAt = DateTime.UtcNow;
     }
 }
