@@ -1,7 +1,0 @@
-services:
-  app:
-    build:
-      target: development
-    restart: "no"
-    volumes:
-      - .:/app
