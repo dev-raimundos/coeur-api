@@ -1,33 +1,39 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>4766a3da-221a-420c-90c1-c11b5c6b2eb3</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>4766a3da-221a-420c-90c1-c11b5c6b2eb3</UserSecretsId>
+		<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+		<DockerfileContext>.</DockerfileContext>
+		<RootNamespace>NeonVertexApi</RootNamespace>
+		<DefaultItemExcludes>$(DefaultItemExcludes)</DefaultItemExcludes>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
-  </ItemGroup>
+	<PropertyGroup>
+		<EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="src\Core\Database\Migrations\" />
-    <Folder Include="src\Core\Middleware\" />
-    <Folder Include="src\Core\Authentication\" />
-    <Folder Include="src\Core\Extensions\" />
-    <Folder Include="src\Core\Settings\" />
-    <Folder Include="src\Modules\Authentication\" />
-    <Folder Include="src\Modules\Users\" />
-    <Folder Include="src\Shared\Interfaces\" />
-    <Folder Include="src\Shared\Models\" />
-    <Folder Include="src\Shared\Exceptions\" />
-    <Folder Include="src\Shared\Extensions\" />
-    <Folder Include="src\Shared\Validators\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="App\Core\Database\Migrations\" />
+		<Folder Include="App\Core\Middleware\" />
+		<Folder Include="App\Core\Authentication\" />
+		<Folder Include="App\Core\Settings\" />
+		<Folder Include="App\Modules\Authentication\" />
+		<Folder Include="App\Shared\Interfaces\" />
+		<Folder Include="App\Shared\Models\" />
+		<Folder Include="App\Shared\Exceptions\" />
+		<Folder Include="App\Shared\Extensions\" />
+		<Folder Include="App\Shared\Validators\" />
+	</ItemGroup>
 
 </Project>
