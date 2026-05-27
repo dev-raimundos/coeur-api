@@ -22,7 +22,7 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
         await repository.AddAsync(user);
         await context.SaveChangesAsync();
 
-        return MapToResponse(user);
+        return UserResponse.FromEntity(user);
     }
 
     public async Task<UserResponse> GetByIdAsync(Guid id)
@@ -30,7 +30,7 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
         var user = await repository.GetByIdAsync(id) 
             ?? throw AppException.NotFound(ErrNotFound);
 
-        return MapToResponse(user);
+        return UserResponse.FromEntity(user);
     }
 
     public async Task<UserResponse> UpdateAsync(Guid id, UpdateUserDto dto)
@@ -41,7 +41,7 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
         user.UpdateProfile(dto.Name);
         await context.SaveChangesAsync();
 
-        return MapToResponse(user);
+        return UserResponse.FromEntity(user);
     }
 
     public async Task DeleteAsync(Guid id)
@@ -52,15 +52,4 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
         await repository.DeleteAsync(user);
         await context.SaveChangesAsync();
     }
-
-    private static UserResponse MapToResponse(User user) => new(
-        user.Id,
-        user.Name,
-        user.Email,
-        user.IsActive,
-        user.IsEmailVerified,
-        user.CreatedAt,
-        user.UpdatedAt,
-        user.LastLoginAt
-    );
 }

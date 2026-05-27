@@ -16,7 +16,26 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="App\Shared\Interface\IUsersRepository.cs" />
+	  <Compile Remove="App\Core\Settings\**" />
+	  <Compile Remove="App\Modules\Authentication\**" />
+	  <Compile Remove="App\Shared\Extensions\**" />
+	  <Compile Remove="App\Shared\Interface\**" />
+	  <Compile Remove="App\Shared\Validators\**" />
+	  <Content Remove="App\Core\Settings\**" />
+	  <Content Remove="App\Modules\Authentication\**" />
+	  <Content Remove="App\Shared\Extensions\**" />
+	  <Content Remove="App\Shared\Interface\**" />
+	  <Content Remove="App\Shared\Validators\**" />
+	  <EmbeddedResource Remove="App\Core\Settings\**" />
+	  <EmbeddedResource Remove="App\Modules\Authentication\**" />
+	  <EmbeddedResource Remove="App\Shared\Extensions\**" />
+	  <EmbeddedResource Remove="App\Shared\Interface\**" />
+	  <EmbeddedResource Remove="App\Shared\Validators\**" />
+	  <None Remove="App\Core\Settings\**" />
+	  <None Remove="App\Modules\Authentication\**" />
+	  <None Remove="App\Shared\Extensions\**" />
+	  <None Remove="App\Shared\Interface\**" />
+	  <None Remove="App\Shared\Validators\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -32,15 +51,6 @@
 	<ItemGroup>
 		<Folder Include="App\Core\Database\Migrations\" />
 		<Folder Include="App\Core\Authentication\" />
-		<Folder Include="App\Core\Settings\" />
-		<Folder Include="App\Modules\Authentication\" />
-		<Folder Include="App\Shared\Interface\" />
-		<Folder Include="App\Shared\Extensions\" />
-		<Folder Include="App\Shared\Validators\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="App\Shared\Interface\IUsersRepository.cs" />
 	</ItemGroup>
 
 </Project>
