@@ -30,6 +30,23 @@ public static class ServiceCollectionExtensions
         var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()!;
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
+        // ── CORS ──────────────────────────────────────────────────────────────────
+        // Allows the Angular dev server to communicate with the API.
+        // withCredentials is required for HTTP-only cookies to be sent cross-origin.
+        services.AddCors(options =>
+        {
+            options.AddPolicy("Frontend", policy =>
+            {
+                policy.WithOrigins(
+                          "http://localhost:4200",
+                          "https://web-client-gold.vercel.app"
+                      )
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+            });
+        });
+
         // ── Authentication ────────────────────────────────────────────────────
         // Registers TokenService, responsible for generating JWT tokens.
         // Registers IHttpContextAccessor so services outside the HTTP pipeline

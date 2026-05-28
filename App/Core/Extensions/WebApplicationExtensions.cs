@@ -11,6 +11,10 @@ public static class WebApplicationExtensions
         // thrown by any subsequent middleware or controller.
         app.UseMiddleware<ExceptionMiddleware>();
 
+        // Enables CORS policy for the Angular frontend.
+        // Must be called before UseAuthentication and UseAuthorization.
+        app.UseCors("Frontend");
+
         // Enables the authentication middleware, which reads the JWT from the
         // HTTP-only cookie and populates HttpContext.User with the token claims.
         // Must be called before UseAuthorization.

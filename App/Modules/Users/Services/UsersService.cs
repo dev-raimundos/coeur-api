@@ -13,8 +13,10 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
 
     public async Task<UserResponse> CreateAsync(CreateUserDto dto)
     {
-        if (await repository.ExistsByEmailAsync(dto.Email))
+        if (await repository.ExistsByEmailAsync(dto.Email)) 
+        {
             throw AppException.Conflict(ErrEmailInUse);
+        }
 
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
         var user = User.Create(dto.Name, dto.Email, passwordHash);
