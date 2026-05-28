@@ -8,13 +8,16 @@ namespace NeonVertexApi.App.Modules.Authentication.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-[Produces("application/json")]
-public class AuthController(AuthService service, ICurrentUser currentUser) : ControllerBase
+public class AuthController(AuthService service) : ControllerBase
 {
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        var (response, token) = await service.LoginAsync(dto);
+        var result = await service.LoginAsync(dto);
+
+        var response = result.Response;
+        var token = result.Token;
 
         Response.Cookies.Append("access_token", token, new CookieOptions
         {
@@ -28,21 +31,10 @@ public class AuthController(AuthService service, ICurrentUser currentUser) : Con
     }
 
     [HttpPost("logout")]
+    [AllowAnonymous]
     public IActionResult Logout()
     {
         Response.Cookies.Delete("access_token");
         return NoContent();
-    }
-
-    [HttpGet("me")]
-    [Authorize]
-    public IActionResult Me()
-    {
-        return Ok(new
-        {
-            currentUser.Id,
-            currentUser.Email,
-            currentUser.Name
-        });
     }
 }
