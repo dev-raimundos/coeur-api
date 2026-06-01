@@ -3,10 +3,9 @@
 public class AppException : Exception
 {
     public int StatusCode { get; }
-    public object? Errors { get; }
+    public IReadOnlyDictionary<string, string[]>? Errors { get; }
 
-    private AppException(int statusCode, string message, object? errors = null)
-        : base(message)
+    private AppException(int statusCode, string message, IReadOnlyDictionary<string, string[]>? errors = null) : base(message)
     {
         StatusCode = statusCode;
         Errors = errors;
@@ -23,7 +22,7 @@ public class AppException : Exception
     // 4xx
     // -------------------------------------------------------------------------
 
-    public static AppException BadRequest(string message = "Requisição inválida.", object? errors = null)
+    public static AppException BadRequest(string message = "Requisição inválida.", IReadOnlyDictionary<string, string[]>? errors = null)
         => new(400, message, errors);
 
     public static AppException Unauthorized(string message = "Não autenticado.")
@@ -44,13 +43,13 @@ public class AppException : Exception
     public static AppException NotAcceptable(string message = "Formato não aceito.")
         => new(406, message);
 
-    public static AppException Conflict(string message = "Conflito com o estado atual do recurso.", object? errors = null)
+    public static AppException Conflict(string message = "Conflito com o estado atual do recurso.", IReadOnlyDictionary<string, string[]>? errors = null)
         => new(409, message, errors);
 
     public static AppException Gone(string message = "Recurso não está mais disponível.")
         => new(410, message);
 
-    public static AppException UnprocessableEntity(string message = "Não foi possível processar a requisição.", object? errors = null)
+    public static AppException UnprocessableEntity(string message = "Não foi possível processar a requisição.", IReadOnlyDictionary<string, string[]>? errors = null)
         => new(422, message, errors);
 
     public static AppException Locked(string message = "Recurso bloqueado.")

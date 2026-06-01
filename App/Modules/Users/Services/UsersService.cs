@@ -37,9 +37,7 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
 
     public async Task<UserResponse> UpdateAsync(Guid id, UpdateUserDto dto)
     {
-        var user = await repository.GetByIdAsync(id)
-            ?? throw AppException.NotFound(ErrNotFound);
-
+        var user = await repository.GetByIdAsync(id) ?? throw AppException.NotFound(ErrNotFound);
         user.UpdateProfile(dto.Name);
         await context.SaveChangesAsync();
 
@@ -48,8 +46,7 @@ public class UsersService(IUsersRepository repository, AppDbContext context)
 
     public async Task DeleteAsync(Guid id)
     {
-        var user = await repository.GetByIdAsync(id)
-            ?? throw AppException.NotFound(ErrNotFound);
+        var user = await repository.GetByIdAsync(id) ?? throw AppException.NotFound(ErrNotFound);
 
         await repository.DeleteAsync(user);
         await context.SaveChangesAsync();

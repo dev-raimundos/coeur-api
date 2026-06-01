@@ -23,11 +23,11 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
     }
 
     private static async Task WriteResponseAsync(
-        HttpContext context,
-        int statusCode,
-        string message,
-        string toastType,
-        object? errors = null)
+    HttpContext context,
+    int statusCode,
+    string message,
+    string toastType,
+    IReadOnlyDictionary<string, string[]>? errors = null)
     {
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";

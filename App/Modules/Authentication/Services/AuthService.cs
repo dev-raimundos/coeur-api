@@ -15,8 +15,12 @@ public class AuthService(IUsersRepository repository, TokenService tokenService)
         var user = await repository.GetByEmailAsync(dto.Email)
             ?? throw AppException.Unauthorized(ErrInvalidCredentials);
 
-        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+        bool passwordValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+
+        if (passwordValid)
+        {
             throw AppException.Unauthorized(ErrInvalidCredentials);
+        }
 
         user.RecordLogin();
 
