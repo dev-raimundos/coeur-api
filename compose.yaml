@@ -3,18 +3,21 @@ services:
     build:
       context: .
       target: production
-    env_file:
-      - .env
     environment:
       - ConnectionStrings__Default=${POSTGRES_CONNECTION}
       - Jwt__Secret=${JWT__SECRET}
-      - Jwt__Issuer=${JWT__ISSUER}
-      - Jwt__Audience=${JWT__AUDIENCE}
-      - Jwt__ExpirationHours=${JWT__EXPIRATIONHOURS}
-    restart: always
+      - Jwt__Issuer=${JWT__ISSUER:-NeonVertexApi}
+      - Jwt__Audience=${JWT__AUDIENCE:-NeonVertexApi}
+      - Jwt__ExpirationHours=${JWT__EXPIRATIONHOURS:-24}
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
-      - proxy
+      - coolify
 
 networks:
-  proxy:
+  coolify:
     external: true
