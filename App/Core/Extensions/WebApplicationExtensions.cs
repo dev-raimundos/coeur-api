@@ -17,12 +17,12 @@ public static class WebApplicationExtensions
 
         // Enables the authentication middleware, which reads the JWT from the
         // HTTP-only cookie and populates HttpContext.User with the token claims.
-        // Must be called before UseAuthorization.
         app.UseAuthentication();
 
-        // Enables the authorization middleware, which enforces [Authorize]
-        // attributes on controllers and endpoints based on the authenticated user.
-        app.UseAuthorization();
+        // Authorization is enforced via AuthorizeFilter on MVC controllers
+        // (registered in ServiceCollectionExtensions). Keeping UseAuthorization()
+        // out of the pipeline ensures minimal-API endpoints (e.g. Scalar, OpenAPI)
+        // are never challenged, without needing AllowAnonymous on each one.
 
         return app;
     }

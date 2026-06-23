@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NeonVertexApi.App.Core.Authentication;
@@ -91,22 +91,19 @@ public static class ServiceCollectionExtensions
             });
 
         // ── Controllers ───────────────────────────────────────────────────────
-        // Registers controllers and sets application/json as the default
-        // content-type for all responses globally, removing the need to
-        // decorate each controller with [Produces("application/json")].
+        // Registers controllers with two global filters:
+        // - ProducesAttribute: sets application/json as the default content-type
+        // - AuthorizeFilter: requires authentication on all controller endpoints.
+        // Using AuthorizeFilter (MVC-scoped) instead of SetFallbackPolicy (global)
+        // ensures that minimal API endpoints such as /scalar and /openapi remain
+        // accessible without authentication.
         services.AddControllers(options =>
         {
             options.Filters.Add(new ProducesAttribute("application/json"));
+            options.Filters.Add(new AuthorizeFilter());
         });
 
-        // ── Authorization ─────────────────────────────────────────────────────
-        // Enables the ASP.NET authorization system and sets a global fallback policy
-        // that requires authentication for all endpoints by default.
-        // Use [AllowAnonymous] on specific endpoints to override this behavior.
-        services.AddAuthorizationBuilder()
-            .SetFallbackPolicy(new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build());
+        services.AddAuthorization();
 
         return services;
     }

@@ -15,7 +15,6 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddCore(builder.Configuration);
-        builder.Services.AddControllers();
         builder.Services.AddOpenApi();
 
         builder.Services.AddUsersModule();
@@ -36,6 +35,8 @@ public static class Program
         {
             app.MapOpenApi();
             app.MapScalarApiReference();
+            app.MapGet("/", () => Results.Redirect("/scalar/v1"));
+            app.MapGet("/scalar", () => Results.Redirect("/scalar/v1"));
         }
 
         app.UseHttpsRedirection();
