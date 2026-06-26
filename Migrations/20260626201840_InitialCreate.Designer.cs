@@ -2,78 +2,67 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NeonVertexApi.App.Core.Database;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace NeonVertexApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260622192049_AddShoppingModule")]
-    partial class AddShoppingModule
+    [Migration("20260626201840_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ListItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsChecked")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_checked");
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<Guid?>("ProductId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("product_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1)
-                        .HasColumnName("quantity");
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<Guid>("ShoppingListId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("shopping_list_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Unit")
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("unit");
+                        .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_list_items");
+                    b.HasKey("Id");
 
-                    b.HasIndex("ProductId")
-                        .HasDatabaseName("ix_list_items_product_id");
+                    b.HasIndex("ProductId");
 
-                    b.HasIndex("ShoppingListId")
-                        .HasDatabaseName("ix_list_items_shopping_list_id");
+                    b.HasIndex("ShoppingListId");
 
                     b.ToTable("list_items", (string)null);
                 });
@@ -81,32 +70,26 @@ namespace NeonVertexApi.Migrations
             modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("category");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
-                        .HasColumnName("image_url");
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Id")
-                        .HasName("pk_products");
+                    b.HasKey("Id");
 
                     b.ToTable("products", (string)null);
                 });
@@ -114,32 +97,25 @@ namespace NeonVertexApi.Migrations
             modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ShoppingList", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("owner_id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
+                        .HasColumnType("datetime2");
 
-                    b.HasKey("Id")
-                        .HasName("pk_shopping_lists");
+                    b.HasKey("Id");
 
-                    b.HasIndex("OwnerId")
-                        .HasDatabaseName("ix_shopping_lists_owner_id");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("shopping_lists", (string)null);
                 });
@@ -147,56 +123,45 @@ namespace NeonVertexApi.Migrations
             modelBuilder.Entity("NeonVertexApi.App.Modules.Users.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("character varying(150)")
-                        .HasColumnName("email");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true)
-                        .HasColumnName("is_active");
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<bool>("IsEmailVerified")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false)
-                        .HasColumnName("is_email_verified");
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastLoginAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_login_at");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("name");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("password_hash");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("updated_at");
+                        .HasColumnType("datetime2");
 
-                    b.HasKey("Id")
-                        .HasName("pk_users");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("ix_users_email");
+                        .IsUnique();
 
                     b.ToTable("users", (string)null);
                 });
@@ -206,15 +171,13 @@ namespace NeonVertexApi.Migrations
                     b.HasOne("NeonVertexApi.App.Modules.Shopping.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("fk_list_items_products_product_id");
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("NeonVertexApi.App.Modules.Shopping.Models.ShoppingList", "ShoppingList")
                         .WithMany("Items")
                         .HasForeignKey("ShoppingListId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_list_items_shopping_lists_shopping_list_id");
+                        .IsRequired();
 
                     b.Navigation("Product");
 
@@ -227,8 +190,7 @@ namespace NeonVertexApi.Migrations
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_shopping_lists_users_owner_id");
+                        .IsRequired();
 
                     b.Navigation("Owner");
                 });

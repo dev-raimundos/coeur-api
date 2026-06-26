@@ -16,12 +16,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
     {
         // ── Database ──────────────────────────────────────────────────────────
-        // Registers AppDbContext with the PostgreSQL provider via Npgsql.
-        // UseSnakeCaseNamingConvention automatically converts table and column
-        // names to snake_case, following PostgreSQL naming conventions.
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("Default"))
-                   .UseSnakeCaseNamingConvention());
+            options.UseSqlServer(configuration.GetConnectionString("Default")));
 
         // ── JWT Settings ──────────────────────────────────────────────────────
         // Reads JWT configuration from appsettings / User Secrets / environment

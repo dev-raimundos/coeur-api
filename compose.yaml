@@ -1,10 +1,10 @@
 services:
-  app:
+  neon-vertex-api:
     build:
       context: .
       target: production
     environment:
-      - ConnectionStrings__Default=${POSTGRES_CONNECTION}
+      - ConnectionStrings__Default=${MSSQL_CONNECTION}
       - Jwt__Secret=${JWT__SECRET}
       - Jwt__Issuer=${JWT__ISSUER:-NeonVertexApi}
       - Jwt__Audience=${JWT__AUDIENCE:-NeonVertexApi}
@@ -16,8 +16,8 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      - coolify
+      - home-network
 
 networks:
-  coolify:
+  home-network:
     external: true
