@@ -59,3 +59,13 @@ tasks:
     desc: "Status dos containers"
     cmds:
       - docker compose ps
+
+  shell:
+    desc: "Abre um shell interativo no container da API"
+    cmds:
+      - docker compose exec api /bin/sh
+
+  migrate:
+    desc: "Aplica as migrations pendentes no banco"
+    cmds:
+      - dotnet ef database update
