@@ -19,6 +19,15 @@ public static class Program
         builder.Services.AddCore(builder.Configuration);
         builder.Services.AddOpenApi();
 
+        if (builder.Environment.IsProduction())
+        {
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+                options.KnownProxies.Clear();
+            });
+        }
+
         builder.Services.AddUsersModule();
         builder.Services.AddAuthModule();
         builder.Services.AddShoppingModule();
@@ -33,13 +42,7 @@ public static class Program
 
         if (app.Environment.IsProduction())
         {
-            var forwardedOptions = new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedProto
-            };
-            forwardedOptions.KnownNetworks.Clear();
-            forwardedOptions.KnownProxies.Clear();
-            app.UseForwardedHeaders(forwardedOptions);
+            app.UseForwardedHeaders();
             app.UseHttpsRedirection();
         }
 
