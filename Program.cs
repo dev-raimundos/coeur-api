@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using NeonVertexApi.App.Core.Database;
 using NeonVertexApi.App.Core.Extensions;
+using NeonVertexApi.App.Core.Pages;
 using NeonVertexApi.App.Modules.Authentication;
 using NeonVertexApi.App.Modules.Shopping;
 using NeonVertexApi.App.Modules.Users;
@@ -29,12 +31,29 @@ public static class Program
             await db.Database.MigrateAsync();
         }
 
+        if (app.Environment.IsProduction())
+        {
+            var forwardedOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            };
+            forwardedOptions.KnownNetworks.Clear();
+            forwardedOptions.KnownProxies.Clear();
+            app.UseForwardedHeaders(forwardedOptions);
+            app.UseHttpsRedirection();
+        }
+
         app.UseCore();
 
-        app.MapOpenApi();
-        app.MapScalarApiReference();
-        app.MapGet("/", () => Results.Redirect("/scalar/v1"));
-        app.MapGet("/scalar", () => Results.Redirect("/scalar/v1"));
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapOpenApi();
+            app.MapScalarApiReference();
+            app.MapGet("/scalar", () => Results.Redirect("/scalar/v1"));
+        }
+
+        app.MapGet("/", (IWebHostEnvironment env) =>
+            Results.Content(StatusPage.Render(env), "text/html"));
 
         app.MapControllers();
 
