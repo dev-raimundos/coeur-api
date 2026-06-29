@@ -33,9 +33,15 @@ public static class StatusPage
                         border: 1px solid #1e2d45;
                         border-radius: 16px;
                         padding: 48px 52px;
-                        width: 380px;
+                        width: min(380px, calc(100vw - 32px));
                         text-align: center;
                         box-shadow: 0 0 60px rgba(34, 211, 238, 0.05), 0 24px 48px rgba(0, 0, 0, 0.4);
+                    }
+
+                    @media (max-width: 440px) {
+                        body { align-items: flex-start; padding: 40px 16px; }
+                        .card { padding: 36px 28px; border-radius: 12px; }
+                        .logo { font-size: 1.4rem; }
                     }
 
                     .logo {
