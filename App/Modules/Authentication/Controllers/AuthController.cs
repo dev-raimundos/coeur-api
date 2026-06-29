@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using NeonVertexApi.App.Modules.Authentication.DTOs;
 using NeonVertexApi.App.Modules.Authentication.Services;
-using NeonVertexApi.App.Shared.Interfaces;
 
 namespace NeonVertexApi.App.Modules.Authentication.Controllers;
 
@@ -12,6 +12,7 @@ public class AuthController(AuthService service) : ControllerBase
 {
     [HttpPost("login")]
     [AllowAnonymous]
+    [EnableRateLimiting("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var result = await service.LoginAsync(dto);

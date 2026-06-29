@@ -1,4 +1,4 @@
-﻿using NeonVertexApi.App.Modules.Authentication.Services;
+using NeonVertexApi.App.Modules.Authentication.Services;
 
 namespace NeonVertexApi.App.Modules.Authentication;
 

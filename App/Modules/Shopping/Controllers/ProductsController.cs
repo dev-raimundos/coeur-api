@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NeonVertexApi.App.Modules.Shopping.DTOs;
 using NeonVertexApi.App.Modules.Shopping.Services;
@@ -23,6 +24,7 @@ public class ProductsController(ProductsService service) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto)
     {
         var product = await service.CreateAsync(dto);
@@ -30,6 +32,7 @@ public class ProductsController(ProductsService service) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductDto dto)
     {
         var product = await service.UpdateAsync(id, dto);
@@ -37,6 +40,7 @@ public class ProductsController(ProductsService service) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await service.DeleteAsync(id);

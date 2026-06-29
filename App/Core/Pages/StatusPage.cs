@@ -138,10 +138,6 @@ public static class StatusPage
                             <span class="status-text">online</span>
                         </div>
                     </div>
-                    <div class="status-row">
-                        <span class="label">Environment</span>
-                        <span class="value">{{env.EnvironmentName}}</span>
-                    </div>
                     {{scalarLink}}
                 </div>
             </body>

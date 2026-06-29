@@ -1,4 +1,4 @@
-﻿using NeonVertexApi.App.Modules.Users.Models;
+using NeonVertexApi.App.Modules.Users.Models;
 
 namespace NeonVertexApi.App.Modules.Users.DTOs;
 
@@ -6,6 +6,7 @@ public record UserResponse(
     Guid Id,
     string Name,
     string Email,
+    string Role,
     bool IsActive,
     bool IsEmailVerified,
     DateTime CreatedAt,
@@ -17,6 +18,7 @@ public record UserResponse(
         user.Id,
         user.Name,
         user.Email,
+        user.Role.ToString(),
         user.IsActive,
         user.IsEmailVerified,
         user.CreatedAt,

@@ -15,12 +15,18 @@ services:
       - Jwt__Issuer=${JWT__ISSUER:-NeonVertexApi}
       - Jwt__Audience=${JWT__AUDIENCE:-NeonVertexApi}
       - Jwt__ExpirationHours=${JWT__EXPIRATIONHOURS:-24}
+      - AllowedHosts=${ALLOWED_HOSTS:?ALLOWED_HOSTS is required}
     restart: unless-stopped
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
     networks:
       - home-network
 

@@ -1,13 +1,23 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NeonVertexApi.App.Core.Authentication;
 using NeonVertexApi.App.Core.Database;
+using NeonVertexApi.App.Core.Filters;
 using NeonVertexApi.App.Core.Settings;
+using NeonVertexApi.App.Modules.Authentication.DTOs;
+using NeonVertexApi.App.Modules.Authentication.Validators;
+using NeonVertexApi.App.Modules.Shopping.DTOs;
+using NeonVertexApi.App.Modules.Shopping.Validators;
+using NeonVertexApi.App.Modules.Users.DTOs;
+using NeonVertexApi.App.Modules.Users.Validators;
 using NeonVertexApi.App.Shared.Interfaces;
 using System.Text;
+using System.Text.Json;
+using System.Threading.RateLimiting;
 
 namespace NeonVertexApi.App.Core.Extensions;
 
@@ -20,15 +30,10 @@ public static class ServiceCollectionExtensions
             options.UseSqlServer(configuration.GetConnectionString("Default")));
 
         // ── JWT Settings ──────────────────────────────────────────────────────
-        // Reads JWT configuration from appsettings / User Secrets / environment
-        // variables and makes it available via IOptions<JwtSettings> in the DI
-        // container.
         var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()!;
         services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
-        // ── CORS ──────────────────────────────────────────────────────────────────
-        // Allows the Angular dev server to communicate with the API.
-        // withCredentials is required for HTTP-only cookies to be sent cross-origin.
+        // ── CORS ──────────────────────────────────────────────────────────────
         services.AddCors(options =>
         {
             options.AddPolicy("Frontend", policy =>
@@ -43,24 +48,41 @@ public static class ServiceCollectionExtensions
             });
         });
 
+        // ── Rate Limiting ─────────────────────────────────────────────────────
+        // Per-IP fixed window: 5 login attempts per minute.
+        services.AddRateLimiter(options =>
+        {
+            options.AddPolicy("login", context =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        Window = TimeSpan.FromMinutes(1),
+                        PermitLimit = 5,
+                        QueueLimit = 0,
+                        AutoReplenishment = true
+                    }));
+
+            options.OnRejected = async (ctx, cancellationToken) =>
+            {
+                ctx.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                ctx.HttpContext.Response.ContentType = "application/json";
+
+                var body = JsonSerializer.Serialize(new
+                {
+                    message = "Muitas tentativas. Tente novamente em 1 minuto.",
+                    toast = new { type = "warning", message = "Muitas tentativas. Tente novamente em 1 minuto." }
+                }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+                await ctx.HttpContext.Response.WriteAsync(body, cancellationToken);
+            };
+        });
+
         // ── Authentication ────────────────────────────────────────────────────
-        // Registers TokenService, responsible for generating JWT tokens.
-        // Registers IHttpContextAccessor so services outside the HTTP pipeline
-        // can access the HttpContext (used by CurrentUserService).
-        // Registers CurrentUserService, which extracts the authenticated user's
-        // data from the claims present in the request cookie.
         services.AddScoped<TokenService>();
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUserService>();
 
-        // Configures JWT Bearer as the default authentication scheme and sets
-        // the token validation parameters:
-        // - ValidateIssuer/Audience: ensures the token was issued by this API
-        // - ValidateLifetime: rejects expired tokens
-        // - ValidateIssuerSigningKey: verifies the signature using the configured secret
-        // OnMessageReceived: overrides the default Authorization header lookup
-        // to read the token from the "access_token" HTTP-only cookie, protecting
-        // against XSS attacks since the cookie is not accessible via JavaScript.
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -86,17 +108,19 @@ public static class ServiceCollectionExtensions
                 };
             });
 
+        // ── Validation ────────────────────────────────────────────────────────
+        services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();
+        services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
+        services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
+        services.AddScoped<IValidator<CreateProductDto>, CreateProductDtoValidator>();
+        services.AddScoped<IValidator<UpdateProductDto>, UpdateProductDtoValidator>();
+
         // ── Controllers ───────────────────────────────────────────────────────
-        // Registers controllers with two global filters:
-        // - ProducesAttribute: sets application/json as the default content-type
-        // - AuthorizeFilter: requires authentication on all controller endpoints.
-        // Using AuthorizeFilter (MVC-scoped) instead of SetFallbackPolicy (global)
-        // ensures that minimal API endpoints such as /scalar and /openapi remain
-        // accessible without authentication.
         services.AddControllers(options =>
         {
             options.Filters.Add(new ProducesAttribute("application/json"));
             options.Filters.Add(new AuthorizeFilter());
+            options.Filters.Add<FluentValidationFilter>();
         });
 
         services.AddAuthorization();

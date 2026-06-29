@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NeonVertexApi.App.Modules.Users.DTOs;
 using NeonVertexApi.App.Modules.Users.Services;
 
@@ -9,6 +10,7 @@ namespace NeonVertexApi.App.Modules.Users.Controllers;
 public class UsersController(UsersService service) : ControllerBase
 {
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
     {
         var user = await service.CreateAsync(dto);
