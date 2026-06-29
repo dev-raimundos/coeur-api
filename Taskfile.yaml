@@ -1,8 +1,6 @@
 version: '3'
 
 vars:
-  # Conjuntos de arquivos compose para cada ambiente.
-  LOCAL: "-f compose.yaml -f compose.local.yaml"
   PROD: "-f compose.yaml -f compose.prod.yaml"
 
 tasks:
@@ -11,94 +9,6 @@ tasks:
     cmds:
       - task --list
     silent: true
-
-  # ── Localhost ───────────────────────────────────────────────────────────────
-  build:
-    desc: "Builda a imagem (ambiente local)"
-    cmds:
-      - docker compose {{.LOCAL}} build
-
-  rebuild:
-    desc: "Builda a imagem local sem cache"
-    cmds:
-      - docker compose {{.LOCAL}} build --no-cache
-
-  start:
-    desc: "Sobe a stack local (api + redis + sql server) em background"
-    cmds:
-      - docker compose {{.LOCAL}} up -d
-
-  stop:
-    desc: "Para os containers locais sem removê-los"
-    cmds:
-      - docker compose {{.LOCAL}} stop
-
-  restart:
-    desc: "Reinicia o container da API local"
-    cmds:
-      - docker compose {{.LOCAL}} restart api
-
-  down:
-    desc: "Derruba a stack local"
-    cmds:
-      - docker compose {{.LOCAL}} down
-
-  down:volumes:
-    desc: "Derruba a stack local e remove volumes (apaga dados do banco/redis)"
-    cmds:
-      - docker compose {{.LOCAL}} down -v
-
-  up:
-    desc: "Builda e sobe a stack local em um comando"
-    cmds:
-      - task: build
-      - task: start
-
-  logs:
-    desc: "Logs da API em tempo real (local)"
-    cmds:
-      - docker compose {{.LOCAL}} logs -f api
-
-  logs:all:
-    desc: "Logs de todos os serviços em tempo real (local)"
-    cmds:
-      - docker compose {{.LOCAL}} logs -f
-
-  ps:
-    desc: "Status dos containers locais"
-    cmds:
-      - docker compose {{.LOCAL}} ps
-
-  shell:
-    desc: "Abre um shell no container da API local"
-    cmds:
-      - docker compose {{.LOCAL}} exec api /bin/sh
-
-  redis-cli:
-    desc: "Abre o redis-cli no container do Redis local"
-    cmds:
-      - docker compose {{.LOCAL}} exec redis redis-cli
-
-  # ── EF / Migrations (utilitário dentro do container) ─────────────────────────
-  migration:add:
-    desc: "Cria uma migration. Uso: task migration:add NAME=NomeDaMigration"
-    cmds:
-      - docker compose {{.LOCAL}} run --rm ef migrations add {{.NAME}}
-
-  migration:revert:
-    desc: "Remove a última migration"
-    cmds:
-      - docker compose {{.LOCAL}} run --rm ef migrations remove
-
-  migration:list:
-    desc: "Lista todas as migrations"
-    cmds:
-      - docker compose {{.LOCAL}} run --rm ef migrations list
-
-  migration:update:
-    desc: "Aplica as migrations no banco local"
-    cmds:
-      - docker compose {{.LOCAL}} run --rm ef database update
 
   # ── Produção ────────────────────────────────────────────────────────────────
   prod:build:

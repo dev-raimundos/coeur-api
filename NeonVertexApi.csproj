@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>4766a3da-221a-420c-90c1-c11b5c6b2eb3</UserSecretsId>
-		<DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>.</DockerfileContext>
 		<RootNamespace>NeonVertexApi</RootNamespace>
 		<DefaultItemExcludes>$(DefaultItemExcludes)</DefaultItemExcludes>
