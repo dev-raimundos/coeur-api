@@ -7,49 +7,48 @@ tasks:
       - task --list
     silent: true
 
-  # ── Produção ────────────────────────────────────────────────────────────────
-  prod:build:
-    desc: "Builda a imagem de produção"
+  build:
+    desc: "Builda a imagem"
     cmds:
       - docker compose build
 
-  prod:rebuild:
-    desc: "Builda a imagem de produção sem cache"
+  rebuild:
+    desc: "Builda a imagem sem cache"
     cmds:
       - docker compose build --no-cache
 
-  prod:start:
-    desc: "Sobe a stack de produção em background"
+  start:
+    desc: "Sobe a stack em background"
     cmds:
       - docker compose up -d
 
-  prod:stop:
-    desc: "Para os containers de produção sem removê-los"
+  stop:
+    desc: "Para os containers sem removê-los"
     cmds:
       - docker compose stop
 
-  prod:restart:
-    desc: "Reinicia o container da API em produção"
+  restart:
+    desc: "Reinicia o container da API"
     cmds:
       - docker compose restart api
 
-  prod:down:
-    desc: "Derruba a stack de produção"
+  down:
+    desc: "Derruba a stack"
     cmds:
       - docker compose down
 
-  prod:deploy:
-    desc: "Builda e sobe a produção em um comando"
+  deploy:
+    desc: "Builda e sobe em um comando"
     cmds:
-      - task: prod:build
-      - task: prod:start
+      - task: build
+      - task: start
 
-  prod:logs:
-    desc: "Logs da API em tempo real (produção)"
+  logs:
+    desc: "Logs da API em tempo real"
     cmds:
       - docker compose logs -f api
 
-  prod:ps:
-    desc: "Status dos containers de produção"
+  ps:
+    desc: "Status dos containers"
     cmds:
       - docker compose ps
