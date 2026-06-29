@@ -1,23 +1,39 @@
+name: neon-vertex
+
 services:
-  neon-vertex-api:
+  api:
+    image: neon-vertex-api:latest
     build:
       context: .
       target: production
     environment:
       - ConnectionStrings__Default=${MSSQL_CONNECTION}
+      - ConnectionStrings__Redis=${REDIS_CONNECTION:-redis:6379}
       - Jwt__Secret=${JWT__SECRET}
       - Jwt__Issuer=${JWT__ISSUER:-NeonVertexApi}
       - Jwt__Audience=${JWT__AUDIENCE:-NeonVertexApi}
       - Jwt__ExpirationHours=${JWT__EXPIRATIONHOURS:-24}
+    depends_on:
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
-    networks:
-      - home-network
 
-networks:
-  home-network:
-    external: true
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  redis-data:

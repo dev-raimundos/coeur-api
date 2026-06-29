@@ -18,4 +18,12 @@ secrets.json
 
 # docker
 Dockerfile
+.dockerignore
 compose.yaml
+compose.local.yaml
+compose.prod.yaml
+Taskfile.yaml
+
+# docs
+README.md
+LICENSE.txt

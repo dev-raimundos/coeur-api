@@ -1,0 +1,24 @@
+services:
+  api:
+    container_name: neon-vertex-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__Default=${MSSQL_CONNECTION:?MSSQL_CONNECTION is required}
+      - ConnectionStrings__Redis=redis:6379,password=${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    networks:
+      - home-network
+
+  redis:
+    container_name: neon-vertex-redis
+    command:
+      - "redis-server"
+      - "--appendonly"
+      - "yes"
+      - "--requirepass"
+      - "${REDIS_PASSWORD:?REDIS_PASSWORD is required}"
+    networks:
+      - home-network
+
+networks:
+  home-network:
+    external: true
