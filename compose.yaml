@@ -7,6 +7,7 @@ services:
     build:
       context: .
       target: production
+      network: host
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Default=${MSSQL_CONNECTION:?MSSQL_CONNECTION is required}
