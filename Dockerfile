@@ -5,6 +5,7 @@ WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:8000 \
     DOTNET_RUNNING_IN_CONTAINER=true \
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 USER $APP_UID
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS restore
