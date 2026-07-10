@@ -1,6 +1,6 @@
-using NeonVertexApi.App.Modules.Authentication.Services;
+using CoeurApi.App.Modules.Authentication.Services;
 
-namespace NeonVertexApi.App.Modules.Authentication;
+namespace CoeurApi.App.Modules.Authentication;
 
 public static class AuthModule
 {

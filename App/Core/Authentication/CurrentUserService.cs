@@ -1,8 +1,8 @@
 using System.Security.Claims;
-using NeonVertexApi.App.Modules.Users.Models;
-using NeonVertexApi.App.Shared.Interfaces;
+using CoeurApi.App.Modules.Users.Models;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Core.Authentication;
+namespace CoeurApi.App.Core.Authentication;
 
 public class CurrentUserService(IHttpContextAccessor accessor) : ICurrentUser
 {

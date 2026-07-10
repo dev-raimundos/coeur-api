@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace NeonVertexApi.App.Modules.Shopping.Models;
+namespace CoeurApi.App.Modules.Shopping.Models;
 
 public class ListItemConfiguration : IEntityTypeConfiguration<ListItem>
 {

@@ -1,4 +1,4 @@
-﻿namespace NeonVertexApi.App.Shared.Exceptions;
+﻿namespace CoeurApi.App.Shared.Exceptions;
 
 public class AppException : Exception
 {

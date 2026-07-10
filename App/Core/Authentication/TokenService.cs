@@ -3,10 +3,10 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NeonVertexApi.App.Core.Settings;
-using NeonVertexApi.App.Modules.Users.Models;
+using CoeurApi.App.Core.Settings;
+using CoeurApi.App.Modules.Users.Models;
 
-namespace NeonVertexApi.App.Core.Authentication;
+namespace CoeurApi.App.Core.Authentication;
 
 public class TokenService(IOptions<JwtSettings> options)
 {

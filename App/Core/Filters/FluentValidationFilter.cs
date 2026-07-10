@@ -1,8 +1,8 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
-using NeonVertexApi.App.Shared.Exceptions;
+using CoeurApi.App.Shared.Exceptions;
 
-namespace NeonVertexApi.App.Core.Filters;
+namespace CoeurApi.App.Core.Filters;
 
 public class FluentValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFilter
 {

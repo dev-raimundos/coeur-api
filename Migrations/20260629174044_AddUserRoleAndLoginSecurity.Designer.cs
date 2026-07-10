@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NeonVertexApi.App.Core.Database;
+using CoeurApi.App.Core.Database;
 
 #nullable disable
 
-namespace NeonVertexApi.Migrations
+namespace CoeurApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260629174044_AddUserRoleAndLoginSecurity")]
@@ -25,7 +25,7 @@ namespace NeonVertexApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ListItem", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Shopping.Models.ListItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -67,7 +67,7 @@ namespace NeonVertexApi.Migrations
                     b.ToTable("list_items", (string)null);
                 });
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.Product", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Shopping.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -94,7 +94,7 @@ namespace NeonVertexApi.Migrations
                     b.ToTable("products", (string)null);
                 });
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ShoppingList", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Shopping.Models.ShoppingList", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -120,7 +120,7 @@ namespace NeonVertexApi.Migrations
                     b.ToTable("shopping_lists", (string)null);
                 });
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Users.Models.User", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Users.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -181,14 +181,14 @@ namespace NeonVertexApi.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ListItem", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Shopping.Models.ListItem", b =>
                 {
-                    b.HasOne("NeonVertexApi.App.Modules.Shopping.Models.Product", "Product")
+                    b.HasOne("CoeurApi.App.Modules.Shopping.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("NeonVertexApi.App.Modules.Shopping.Models.ShoppingList", "ShoppingList")
+                    b.HasOne("CoeurApi.App.Modules.Shopping.Models.ShoppingList", "ShoppingList")
                         .WithMany("Items")
                         .HasForeignKey("ShoppingListId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -199,9 +199,9 @@ namespace NeonVertexApi.Migrations
                     b.Navigation("ShoppingList");
                 });
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ShoppingList", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Shopping.Models.ShoppingList", b =>
                 {
-                    b.HasOne("NeonVertexApi.App.Modules.Users.Models.User", "Owner")
+                    b.HasOne("CoeurApi.App.Modules.Users.Models.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -210,7 +210,7 @@ namespace NeonVertexApi.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("NeonVertexApi.App.Modules.Shopping.Models.ShoppingList", b =>
+            modelBuilder.Entity("CoeurApi.App.Modules.Shopping.Models.ShoppingList", b =>
                 {
                     b.Navigation("Items");
                 });

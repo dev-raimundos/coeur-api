@@ -1,7 +1,7 @@
 services:
   api:
-    container_name: neon-vertex-api
-    image: neon-vertex-api:latest
+    container_name: coeur-api
+    image: coeur-api:latest
     build:
       context: .
       target: production
@@ -9,7 +9,7 @@ services:
     expose:
       - "8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "-H", "Host: neon-vertex.api.br", "http://127.0.0.1:8000/"]
+      test: ["CMD", "curl", "-f", "-H", "Host: api.coeur.app.br", "http://127.0.0.1:8000/"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -18,8 +18,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Default=${MSSQL_CONNECTION:?MSSQL_CONNECTION is required}
       - Jwt__Secret=${JWT__SECRET:?JWT__SECRET is required}
-      - Jwt__Issuer=${JWT__ISSUER:-NeonVertexApi}
-      - Jwt__Audience=${JWT__AUDIENCE:-NeonVertexApi}
+      - Jwt__Issuer=${JWT__ISSUER:-coeur-api}
+      - Jwt__Audience=${JWT__AUDIENCE:-coeur-api}
       - Jwt__ExpirationHours=${JWT__EXPIRATIONHOURS:-24}
       - AllowedHosts=${ALLOWED_HOSTS:?ALLOWED_HOSTS is required}
     restart: unless-stopped

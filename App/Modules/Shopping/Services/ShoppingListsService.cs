@@ -1,10 +1,10 @@
-using NeonVertexApi.App.Core.Database;
-using NeonVertexApi.App.Modules.Shopping.DTOs;
-using NeonVertexApi.App.Modules.Shopping.Models;
-using NeonVertexApi.App.Modules.Shopping.Repositories;
-using NeonVertexApi.App.Shared.Exceptions;
+using CoeurApi.App.Core.Database;
+using CoeurApi.App.Modules.Shopping.DTOs;
+using CoeurApi.App.Modules.Shopping.Models;
+using CoeurApi.App.Modules.Shopping.Repositories;
+using CoeurApi.App.Shared.Exceptions;
 
-namespace NeonVertexApi.App.Modules.Shopping.Services;
+namespace CoeurApi.App.Modules.Shopping.Services;
 
 public class ShoppingListsService(IShoppingListRepository repository, AppDbContext context)
 {

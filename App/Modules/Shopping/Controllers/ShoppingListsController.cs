@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using NeonVertexApi.App.Modules.Shopping.DTOs;
-using NeonVertexApi.App.Modules.Shopping.Services;
-using NeonVertexApi.App.Shared.Interfaces;
+using CoeurApi.App.Modules.Shopping.DTOs;
+using CoeurApi.App.Modules.Shopping.Services;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Modules.Shopping.Controllers;
+namespace CoeurApi.App.Modules.Shopping.Controllers;
 
 [ApiController]
 [Route("api/shopping-lists")]

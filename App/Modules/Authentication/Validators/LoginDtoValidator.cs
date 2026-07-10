@@ -1,7 +1,7 @@
 using FluentValidation;
-using NeonVertexApi.App.Modules.Authentication.DTOs;
+using CoeurApi.App.Modules.Authentication.DTOs;
 
-namespace NeonVertexApi.App.Modules.Authentication.Validators;
+namespace CoeurApi.App.Modules.Authentication.Validators;
 
 public class LoginDtoValidator : AbstractValidator<LoginDto>
 {

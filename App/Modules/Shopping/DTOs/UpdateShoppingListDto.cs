@@ -1,3 +1,3 @@
-namespace NeonVertexApi.App.Modules.Shopping.DTOs;
+namespace CoeurApi.App.Modules.Shopping.DTOs;
 
 public record UpdateShoppingListDto(string Name);

@@ -1,4 +1,4 @@
-namespace NeonVertexApi.App.Core.Pages;
+namespace CoeurApi.App.Core.Pages;
 
 public static class StatusPage
 {
@@ -14,7 +14,7 @@ public static class StatusPage
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>NeonVertex API</title>
+                <title>Coeur API</title>
                 <style>
                     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -128,7 +128,7 @@ public static class StatusPage
             </head>
             <body>
                 <div class="card">
-                    <div class="logo">Neon<span class="accent">Vertex</span> API</div>
+                    <div class="logo">Coeur<span class="accent">API</span></div>
                     <div class="tagline">REST Interface</div>
                     <hr class="divider">
                     <div class="status-row">

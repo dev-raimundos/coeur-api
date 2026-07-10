@@ -1,4 +1,4 @@
-﻿namespace NeonVertexApi.App.Modules.Authentication.DTOs;
+﻿namespace CoeurApi.App.Modules.Authentication.DTOs;
 
 public record LoginDto(
     string Email,

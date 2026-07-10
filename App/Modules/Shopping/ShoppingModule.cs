@@ -1,7 +1,7 @@
-using NeonVertexApi.App.Modules.Shopping.Repositories;
-using NeonVertexApi.App.Modules.Shopping.Services;
+using CoeurApi.App.Modules.Shopping.Repositories;
+using CoeurApi.App.Modules.Shopping.Services;
 
-namespace NeonVertexApi.App.Modules.Shopping;
+namespace CoeurApi.App.Modules.Shopping;
 
 public static class ShoppingModule
 {

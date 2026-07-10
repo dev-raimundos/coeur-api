@@ -1,7 +1,7 @@
 using FluentValidation;
-using NeonVertexApi.App.Modules.Users.DTOs;
+using CoeurApi.App.Modules.Users.DTOs;
 
-namespace NeonVertexApi.App.Modules.Users.Validators;
+namespace CoeurApi.App.Modules.Users.Validators;
 
 public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace NeonVertexApi.App.Modules.Users.Models;
+namespace CoeurApi.App.Modules.Users.Models;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

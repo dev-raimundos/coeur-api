@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NeonVertexApi.App.Core.Database;
-using NeonVertexApi.App.Modules.Users.Models;
-using NeonVertexApi.App.Shared.Interfaces;
+using CoeurApi.App.Core.Database;
+using CoeurApi.App.Modules.Users.Models;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Modules.Users.Repositories;
+namespace CoeurApi.App.Modules.Users.Repositories;
 
 public class UsersRepository(AppDbContext context) : IUsersRepository
 {

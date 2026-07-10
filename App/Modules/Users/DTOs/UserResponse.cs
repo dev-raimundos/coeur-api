@@ -1,6 +1,6 @@
-using NeonVertexApi.App.Modules.Users.Models;
+using CoeurApi.App.Modules.Users.Models;
 
-namespace NeonVertexApi.App.Modules.Users.DTOs;
+namespace CoeurApi.App.Modules.Users.DTOs;
 
 public record UserResponse(
     Guid Id,

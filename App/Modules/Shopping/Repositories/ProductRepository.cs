@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using NeonVertexApi.App.Core.Database;
-using NeonVertexApi.App.Modules.Shopping.Models;
+using CoeurApi.App.Core.Database;
+using CoeurApi.App.Modules.Shopping.Models;
 
-namespace NeonVertexApi.App.Modules.Shopping.Repositories;
+namespace CoeurApi.App.Modules.Shopping.Repositories;
 
 public class ProductRepository(AppDbContext context) : IProductRepository
 {

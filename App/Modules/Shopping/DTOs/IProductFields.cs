@@ -1,4 +1,4 @@
-namespace NeonVertexApi.App.Modules.Shopping.DTOs;
+namespace CoeurApi.App.Modules.Shopping.DTOs;
 
 public interface IProductFields
 {

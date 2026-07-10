@@ -1,7 +1,7 @@
-﻿using NeonVertexApi.App.Shared.Exceptions;
+﻿using CoeurApi.App.Shared.Exceptions;
 using System.Text.Json;
 
-namespace NeonVertexApi.App.Core.Middleware;
+namespace CoeurApi.App.Core.Middleware;
 
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {
