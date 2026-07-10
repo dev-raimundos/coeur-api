@@ -86,17 +86,21 @@ Request flow: `Controller → Service → Repository`, response bubbles back up 
 
 Module registration and cross-cutting setup live in `App/Core/Extensions/`:
 - `ServiceCollectionExtensions.AddCore()` — DbContext, JWT bearer auth (reads the cookie via `OnMessageReceived`), CORS (`Frontend` policy), per-IP rate limiting on login, FluentValidation registrations, global `AuthorizeFilter` + `FluentValidationFilter` on all controllers.
-- `WebApplicationExtensions.UseCore()` — middleware pipeline order: `ExceptionMiddleware` → CORS → Authentication → Authorization → RateLimiter.
+- `WebApplicationExtensions.UseCore()` — middleware pipeline order: `UseExceptionHandler()` → CORS → Authentication → Authorization → RateLimiter.
 
 ## Error handling
 
-Business errors are thrown as `HttpException` (`App/Shared/Exceptions/HttpException.cs`) via semantic factory methods (`HttpException.NotFound(...)`, `.Conflict(...)`, `.Forbidden(...)`, etc.) — only the status codes actually used exist as factories (`BadRequest`, `Unauthorized`, `Forbidden`, `NotFound`, `Conflict`, `TooManyRequests`, `NoContent`); add a new one only when a real use case needs it, don't pre-build the full HTTP status registry. `ExceptionMiddleware` catches these and any unhandled exception, formatting a consistent JSON body:
+Business errors are thrown as `HttpException` (`App/Shared/Exceptions/HttpException.cs`) via semantic factory methods (`HttpException.NotFound(...)`, `.Conflict(...)`, `.Forbidden(...)`, etc.) — only the status codes actually used exist as factories (`BadRequest`, `Unauthorized`, `Forbidden`, `NotFound`, `Conflict`, `TooManyRequests`, `NoContent`); add a new one only when a real use case needs it, don't pre-build the full HTTP status registry.
+
+Error responses follow the ASP.NET Core standard, **Problem Details** (RFC 9457): `HttpExceptionHandler` (`App/Core/Middleware/HttpExceptionHandler.cs`), an `IExceptionHandler` registered via `AddExceptionHandler<HttpExceptionHandler>()` + `AddProblemDetails()`, converts every `HttpException` into a `ProblemDetails`/`ValidationProblemDetails` written through `IProblemDetailsService`. Any exception that isn't an `HttpException` falls through (returns `false`) to the framework's own default handler, which logs it and emits a generic 500 Problem Details — no custom catch-all logging needed. Shape:
 
 ```json
-{ "message": "...", "toast": { "type": "warning" | "error" | "info", "message": "..." } }
+{ "type": "...", "title": "...", "status": 404, "detail": "Recurso não encontrado.", "toast": { "type": "warning", "message": "Recurso não encontrado." } }
 ```
 
-`toast.type` is derived from the status code (5xx → `error`, 4xx → `warning`, else `info`) — consumed by the Angular frontend's HTTP interceptor. `HttpException.BadRequest`/`.Conflict` can also carry a per-field `errors` dictionary, which `FluentValidationFilter` populates automatically when a DTO fails validation (validators are resolved from DI by argument type, so every action-method parameter with a registered `IValidator<T>` is validated before the action runs).
+`title`/`type` are filled in automatically by the framework from the status code (RFC reason phrase + section link) — don't set them manually. `errors` (per-field validation dictionary) appears as a top-level member (not an extension) whenever `HttpException.Errors` is set, matching the same `ValidationProblemDetails` shape ASP.NET Core's own `[ApiController]` model-binding validation already produces — so a malformed request body and a FluentValidation failure now return identically-shaped 400s.
+
+`toast` is a custom `extensions` entry — the one deliberate deviation from the bare RFC 9457 shape, kept for the Angular frontend's HTTP interceptor. It's added by a single global `options.CustomizeProblemDetails` callback in `AddProblemDetails()` (`ServiceCollectionExtensions.AddCore()`), derived from `ProblemDetails.Status`/`.Detail` (5xx → `error`, 4xx → `warning`, else `info`; falls back to a fixed pt-BR message when `Detail` is empty, e.g. for the framework's generic 500). Because this hook runs for *every* Problem Details response — `HttpExceptionHandler`'s, the framework's own unhandled-exception 500, `[ApiController]`'s model-binding 400s, and the 429 rate-limit rejection (`RateLimiterOptions.OnRejected`) — none of those call sites need to set `toast` themselves; this is the single source of truth for it.
 
 ## Auth
 

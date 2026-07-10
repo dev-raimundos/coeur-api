@@ -41,15 +41,4 @@ public class HttpException : Exception
 
     public static HttpException TooManyRequests(string message = "Muitas requisições. Tente novamente mais tarde.")
         => new(HttpStatusCode.TooManyRequests, message);
-
-    // -------------------------------------------------------------------------
-    // Toast
-    // -------------------------------------------------------------------------
-
-    public string ToastType => StatusCode switch
-    {
-        >= 500 => "error",
-        >= 400 => "warning",
-        _ => "info"
-    };
 }

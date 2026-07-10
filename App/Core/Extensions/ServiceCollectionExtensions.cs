@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using CoeurApi.App.Core.Authentication;
 using CoeurApi.App.Core.Database;
 using CoeurApi.App.Core.Filters;
+using CoeurApi.App.Core.Middleware;
 using CoeurApi.App.Core.Settings;
 using CoeurApi.App.Modules.Authentication.DTOs;
 using CoeurApi.App.Modules.Authentication.Validators;
@@ -17,7 +18,6 @@ using CoeurApi.App.Modules.Users.DTOs;
 using CoeurApi.App.Modules.Users.Validators;
 using CoeurApi.App.Shared.Interfaces;
 using System.Text;
-using System.Text.Json;
 using System.Threading.RateLimiting;
 
 namespace CoeurApi.App.Core.Extensions;
@@ -26,6 +26,31 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration)
     {
+        // ── Erros (Problem Details, RFC 9457) ────────────────────────────────
+        // CustomizeProblemDetails roda pra QUALQUER Problem Details que a aplicação gerar —
+        // inclusive o 500 genérico do handler default do framework pra exceções não tratadas —
+        // então é o único lugar que precisa saber montar o `toast` a partir do status.
+        services.AddProblemDetails(options =>
+        {
+            options.CustomizeProblemDetails = context =>
+            {
+                var status = context.ProblemDetails.Status ?? StatusCodes.Status500InternalServerError;
+                var message = context.ProblemDetails.Detail ?? "Erro inesperado.";
+
+                context.ProblemDetails.Extensions["toast"] = new
+                {
+                    type = status switch
+                    {
+                        >= 500 => "error",
+                        >= 400 => "warning",
+                        _ => "info"
+                    },
+                    message
+                };
+            };
+        });
+        services.AddExceptionHandler<HttpExceptionHandler>();
+
         // ── Database ──────────────────────────────────────────────────────────
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("Default")));
@@ -78,15 +103,19 @@ public static class ServiceCollectionExtensions
             options.OnRejected = async (ctx, cancellationToken) =>
             {
                 ctx.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-                ctx.HttpContext.Response.ContentType = "application/json";
 
-                var body = JsonSerializer.Serialize(new
+                var problemDetails = new ProblemDetails
                 {
-                    message = "Muitas tentativas. Tente novamente em 1 minuto.",
-                    toast = new { type = "warning", message = "Muitas tentativas. Tente novamente em 1 minuto." }
-                }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                    Status = StatusCodes.Status429TooManyRequests,
+                    Detail = "Muitas tentativas. Tente novamente em 1 minuto."
+                };
 
-                await ctx.HttpContext.Response.WriteAsync(body, cancellationToken);
+                var problemDetailsService = ctx.HttpContext.RequestServices.GetRequiredService<IProblemDetailsService>();
+                await problemDetailsService.WriteAsync(new ProblemDetailsContext
+                {
+                    HttpContext = ctx.HttpContext,
+                    ProblemDetails = problemDetails
+                });
             };
         });
 

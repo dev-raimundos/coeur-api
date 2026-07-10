@@ -43,7 +43,7 @@ coeur-api/
 │   │   ├── Database/                  # AppDbContext, Migrations
 │   │   │   └── Migrations/
 │   │   ├── Extensions/                # ServiceCollectionExtensions, WebApplicationExtensions
-│   │   ├── Middleware/                # ExceptionMiddleware
+│   │   ├── Middleware/                # HttpExceptionHandler
 │   │   └── Settings/                  # JwtSettings
 │   │
 │   ├── Shared/                        # Contratos e utilitários compartilhados entre módulos
@@ -113,12 +113,12 @@ HTTP Request
 HTTP Response
 
 Em caso de erro:
-    HttpException → ExceptionMiddleware → JSON com { message, toast }
+    HttpException → HttpExceptionHandler → Problem Details (RFC 9457) com extension toast
 ```
 
 ### Tratamento de erros
 
-Erros de negócio são comunicados via `HttpException`, uma exception com factory methods semânticos que interrompem o fluxo e são interceptados pelo `ExceptionMiddleware`:
+Erros de negócio são comunicados via `HttpException`, uma exception com factory methods semânticos que interrompem o fluxo:
 
 ```csharp
 // No service — interrompe o fluxo imediatamente
@@ -127,11 +127,14 @@ throw HttpException.Conflict("Email já está em uso.");
 throw HttpException.Forbidden("Acesso negado.");
 ```
 
-O middleware formata automaticamente a resposta JSON com o contrato de `toast`, consumido pelo interceptor do frontend Angular:
+`HttpExceptionHandler` (`IExceptionHandler`) intercepta e converte pra **Problem Details** ([RFC 9457](https://www.rfc-editor.org/rfc/rfc9457)) — o formato padrão de resposta de erro do ASP.NET Core, reconhecido por Scalar/Swagger e por qualquer client HTTP gerado a partir do OpenAPI:
 
 ```json
 {
-  "message": "Email já está em uso.",
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "Conflict",
+  "status": 409,
+  "detail": "Email já está em uso.",
   "toast": {
     "type": "warning",
     "message": "Email já está em uso."
@@ -139,7 +142,7 @@ O middleware formata automaticamente a resposta JSON com o contrato de `toast`, 
 }
 ```
 
-O tipo do toast é resolvido automaticamente pela faixa do status HTTP — `error` para 5xx, `warning` para 4xx.
+`type`/`title` são preenchidos automaticamente pelo framework a partir do status HTTP. O único campo fora do RFC é `toast`, consumido pelo interceptor do frontend Angular — adicionado por um único hook global (`options.CustomizeProblemDetails` em `AddProblemDetails()`) que roda pra **qualquer** Problem Details que a aplicação gerar, não só as vindas de `HttpException`. Isso inclui o Problem Details genérico de 500 que o próprio ASP.NET Core cria pra bugs não tratados (que caem direto no handler default do framework, já loga sozinho) e os 400 automáticos de model binding do `[ApiController]` — todos ganham `toast` sem precisar de tratamento manual em cada lugar. Quando o erro carrega validação por campo (`HttpException.BadRequest(msg, errors)`/`.Conflict(msg, errors)`), a resposta vira `ValidationProblemDetails` com um `errors` no formato `{ campo: [mensagens] }` — o mesmo shape que o `[ApiController]` já usa nativamente pra erros de model binding, então os dois casos (JSON malformado vs. falha de validação do FluentValidation) respondem com o mesmo contrato.
 
 ### Autenticação
 
