@@ -9,6 +9,8 @@ namespace CoeurApi.App.Modules.Authentication.Controllers;
 public class MeController(ICurrentUser user) : ControllerBase
 {
     [HttpGet("me")]
+    [EndpointSummary("Dados do usuário autenticado")]
+    [EndpointDescription("Retorna id, nome e email do usuário dono do access_token enviado no cookie.")]
     [ProducesResponseType<MeResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     public ActionResult<MeResponse> Me()
