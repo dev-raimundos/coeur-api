@@ -5,7 +5,7 @@ using CoeurApi.App.Shared.Interfaces;
 namespace CoeurApi.App.Modules.Authentication.Controllers;
 
 [ApiController]
-[Route("api/auth")]
+[Route("api/v1/auth")]
 public class MeController(ICurrentUser user) : ControllerBase
 {
     [HttpGet("me")]

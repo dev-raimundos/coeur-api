@@ -7,7 +7,7 @@ using CoeurApi.App.Shared.DTOs;
 namespace CoeurApi.App.Modules.Shopping.Controllers;
 
 [ApiController]
-[Route("api/products")]
+[Route("api/v1/products")]
 public class ProductsController(
     GetAllProductsService getAllProducts,
     GetProductByIdService getProductById,
@@ -39,7 +39,7 @@ public class ProductsController(
     public async Task<ActionResult<ProductResponse>> Create([FromBody] CreateProductDto dto, CancellationToken cancellationToken)
     {
         var product = await createProduct.ExecuteAsync(dto, cancellationToken);
-        return Created($"api/products/{product.Id}", product);
+        return Created($"api/v1/products/{product.Id}", product);
     }
 
     [HttpPut("{id:guid}")]

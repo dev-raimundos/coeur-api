@@ -102,3 +102,7 @@ Business errors are thrown as `AppException` (`App/Shared/Exceptions/AppExceptio
 
 JWT stored in an HTTP-only cookie (`access_token`), read out in `AddJwtBearer().Events.OnMessageReceived` rather than the `Authorization` header — so there is no bearer-token handling on the client. Every controller requires auth by default (global `AuthorizeFilter`); use `[AllowAnonymous]` to opt out (e.g. login, user creation). `ICurrentUser`/`CurrentUserService` (`App/Core/Authentication/`) exposes the authenticated user's id/email/name/role for ownership checks inside services (see the `id != currentUser.Id && !currentUser.IsAdmin` pattern in `GetUserByIdService`/`UpdateUserService`/`DeleteUserService`). No refresh tokens — expired token means re-login.
 
+## API routes
+
+All controller routes are prefixed `api/v1/...` (e.g. `[Route("api/v1/users")]`). Keep any new controller and any hardcoded `Location` header (`Created($"api/v1/...")`) consistent with this prefix.
+

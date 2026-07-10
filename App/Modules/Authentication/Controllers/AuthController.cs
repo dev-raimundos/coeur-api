@@ -9,7 +9,7 @@ using CoeurApi.App.Modules.Authentication.Services;
 namespace CoeurApi.App.Modules.Authentication.Controllers;
 
 [ApiController]
-[Route("api/auth")]
+[Route("api/v1/auth")]
 public class AuthController(LoginService loginService, IOptions<JwtSettings> jwtSettings) : ControllerBase
 {
     [HttpPost("login")]

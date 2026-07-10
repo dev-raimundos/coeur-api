@@ -6,7 +6,7 @@ using CoeurApi.App.Modules.Users.Services;
 namespace CoeurApi.App.Modules.Users.Controllers;
 
 [ApiController]
-[Route("api/users")]
+[Route("api/v1/users")]
 public class UsersController(
     CreateUserService createUser,
     GetUserByIdService getUserById,
@@ -18,7 +18,7 @@ public class UsersController(
     public async Task<ActionResult<UserResponse>> Create([FromBody] CreateUserDto dto, CancellationToken cancellationToken)
     {
         var user = await createUser.ExecuteAsync(dto, cancellationToken);
-        return Created($"api/users/{user.Id}", user);
+        return Created($"api/v1/users/{user.Id}", user);
     }
 
     [HttpGet("{id:guid}")]

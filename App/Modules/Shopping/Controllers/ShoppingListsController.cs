@@ -7,7 +7,7 @@ using CoeurApi.App.Shared.Interfaces;
 namespace CoeurApi.App.Modules.Shopping.Controllers;
 
 [ApiController]
-[Route("api/shopping-lists")]
+[Route("api/v1/shopping-lists")]
 public class ShoppingListsController(
     GetAllShoppingListsService getAllShoppingLists,
     GetShoppingListByIdService getShoppingListById,
@@ -41,7 +41,7 @@ public class ShoppingListsController(
     public async Task<ActionResult<ShoppingListResponse>> Create([FromBody] CreateShoppingListDto dto, CancellationToken cancellationToken)
     {
         var list = await createShoppingList.ExecuteAsync(dto, currentUser.Id, cancellationToken);
-        return Created($"api/shopping-lists/{list.Id}", list);
+        return Created($"api/v1/shopping-lists/{list.Id}", list);
     }
 
     [HttpPut("{id:guid}")]
@@ -62,7 +62,7 @@ public class ShoppingListsController(
     public async Task<ActionResult<ListItemResponse>> AddItem(Guid id, [FromBody] AddListItemDto dto, CancellationToken cancellationToken)
     {
         var item = await addShoppingListItem.ExecuteAsync(id, dto, currentUser.Id, cancellationToken);
-        return Created($"api/shopping-lists/{id}/items/{item.Id}", item);
+        return Created($"api/v1/shopping-lists/{id}/items/{item.Id}", item);
     }
 
     [HttpPatch("{id:guid}/items/{itemId:guid}")]
