@@ -1,6 +1,6 @@
-# NeonVertexApi
+# Coeur API
 
-NeonVertexApi é uma API REST de propósito geral desenvolvida para servir de base para projetos pessoais. O objetivo é ter uma fundação sólida, bem estruturada e reutilizável — com autenticação, gerenciamento de usuários e uma arquitetura que escala de forma organizada conforme o projeto cresce, sem a complexidade desnecessária de microserviços.
+Coeur API é uma API REST de propósito geral desenvolvida para servir de base para projetos pessoais. O objetivo é ter uma fundação sólida, bem estruturada e reutilizável — com autenticação, gerenciamento de usuários e uma arquitetura que escala de forma organizada conforme o projeto cresce, sem a complexidade desnecessária de microserviços.
 
 O projeto foi construído com foco em clareza de código, convenções consistentes e facilidade de extensão. Cada decisão arquitetural foi tomada priorizando a compreensão do que está acontecendo, sem magia excessiva ou abstrações desnecessárias.
 
@@ -36,7 +36,7 @@ Ao contrário dos microserviços, onde cada domínio é um serviço independente
 ### Estrutura de pastas
 
 ```
-NeonVertexApi/
+coeur-api/
 ├── App/
 │   ├── Core/                          # Infraestrutura transversal da aplicação
 │   │   ├── Authentication/            # TokenService, CurrentUserService
@@ -156,8 +156,8 @@ O token expira em 24 horas. Não há refresh token — ao expirar, o usuário pr
 ### 1. Clonar o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/NeonVertexApi.git
-cd NeonVertexApi
+git clone https://github.com/seu-usuario/coeur-api.git
+cd coeur-api
 ```
 
 ### 2. Configurar variáveis de ambiente
@@ -171,8 +171,8 @@ cp .env.example .env
 ```env
 POSTGRES_CONNECTION=Host=;Port=5432;Database=;Username=;Password=
 JWT__SECRET=
-JWT__ISSUER=NeonVertexApi
-JWT__AUDIENCE=NeonVertexApi
+JWT__ISSUER=coeur-api
+JWT__AUDIENCE=coeur-api
 JWT__EXPIRATIONHOURS=24
 ```
 
@@ -308,7 +308,7 @@ task down      # derruba os containers
 
 ## Convenções de código
 
-- Namespaces espelham a estrutura de pastas: `NeonVertexApi.App.{Camada}.{Módulo}`
+- Namespaces espelham a estrutura de pastas: `CoeurApi.App.{Camada}.{Módulo}`
 - Entidades usam `private set` em todas as propriedades — estado só é alterado por métodos da própria entidade
 - Entidades são criadas via factory method estático `Create`, nunca por construtor público
 - DTOs de saída são `record` imutáveis com método estático `FromEntity` para conversão

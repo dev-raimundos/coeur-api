@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NeonVertexApi.App.Modules.Shopping.Models;
-using NeonVertexApi.App.Modules.Users.Models;
+using CoeurApi.App.Modules.Shopping.Models;
+using CoeurApi.App.Modules.Users.Models;
 
-namespace NeonVertexApi.App.Core.Database;
+namespace CoeurApi.App.Core.Database;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

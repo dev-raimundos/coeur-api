@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NeonVertexApi.App.Modules.Users.DTOs;
-using NeonVertexApi.App.Modules.Users.Services;
+using CoeurApi.App.Modules.Users.DTOs;
+using CoeurApi.App.Modules.Users.Services;
 
-namespace NeonVertexApi.App.Modules.Users.Controllers;
+namespace CoeurApi.App.Modules.Users.Controllers;
 
 [ApiController]
 [Route("api/users")]

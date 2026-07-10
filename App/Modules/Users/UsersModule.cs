@@ -1,8 +1,8 @@
-﻿using NeonVertexApi.App.Modules.Users.Repositories;
-using NeonVertexApi.App.Modules.Users.Services;
-using NeonVertexApi.App.Shared.Interfaces;
+﻿using CoeurApi.App.Modules.Users.Repositories;
+using CoeurApi.App.Modules.Users.Services;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Modules.Users;
+namespace CoeurApi.App.Modules.Users;
 
 public static class UsersModule
 {

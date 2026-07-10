@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NeonVertexApi.Migrations
+namespace CoeurApi.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

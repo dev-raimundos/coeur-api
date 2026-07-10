@@ -1,4 +1,4 @@
-﻿namespace NeonVertexApi.App.Core.Settings;
+﻿namespace CoeurApi.App.Core.Settings;
 
 public class JwtSettings
 {

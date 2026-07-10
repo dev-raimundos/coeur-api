@@ -1,11 +1,11 @@
-using NeonVertexApi.App.Core.Authentication;
-using NeonVertexApi.App.Core.Database;
-using NeonVertexApi.App.Modules.Authentication.DTOs;
-using NeonVertexApi.App.Modules.Users.DTOs;
-using NeonVertexApi.App.Shared.Exceptions;
-using NeonVertexApi.App.Shared.Interfaces;
+using CoeurApi.App.Core.Authentication;
+using CoeurApi.App.Core.Database;
+using CoeurApi.App.Modules.Authentication.DTOs;
+using CoeurApi.App.Modules.Users.DTOs;
+using CoeurApi.App.Shared.Exceptions;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Modules.Authentication.Services;
+namespace CoeurApi.App.Modules.Authentication.Services;
 
 public class AuthService(IUsersRepository repository, TokenService tokenService, AppDbContext context)
 {

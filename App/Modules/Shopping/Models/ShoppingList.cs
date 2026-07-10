@@ -1,6 +1,6 @@
-using NeonVertexApi.App.Modules.Users.Models;
+using CoeurApi.App.Modules.Users.Models;
 
-namespace NeonVertexApi.App.Modules.Shopping.Models;
+namespace CoeurApi.App.Modules.Shopping.Models;
 
 public class ShoppingList
 {

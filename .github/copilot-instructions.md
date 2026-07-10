@@ -1,4 +1,4 @@
-# Copilot Instructions — NeonVertexApi
+# Copilot Instructions — Coeur API
 
 ## Idioma
 - Sempre responda em português brasileiro
@@ -18,7 +18,7 @@
 - Cada módulo segue: Controllers / Services / Repositories / Models / DTOs / XModule.cs
 
 ## Convenções
-- Namespaces seguem a estrutura de pastas: `NeonVertexApi.App.*`
+- Namespaces seguem a estrutura de pastas: `CoeurApi.App.*`
 - Modelos usam propriedades com `private set` e factory method estático `Create`
 - DTOs são `record` imutáveis com método estático `FromEntity`
 - Erros de negócio usam `AppException` com factory methods estáticos

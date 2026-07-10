@@ -1,10 +1,10 @@
-using NeonVertexApi.App.Core.Database;
-using NeonVertexApi.App.Modules.Users.DTOs;
-using NeonVertexApi.App.Modules.Users.Models;
-using NeonVertexApi.App.Shared.Exceptions;
-using NeonVertexApi.App.Shared.Interfaces;
+using CoeurApi.App.Core.Database;
+using CoeurApi.App.Modules.Users.DTOs;
+using CoeurApi.App.Modules.Users.Models;
+using CoeurApi.App.Shared.Exceptions;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Modules.Users.Services;
+namespace CoeurApi.App.Modules.Users.Services;
 
 public class UsersService(IUsersRepository repository, AppDbContext context, ICurrentUser currentUser)
 {

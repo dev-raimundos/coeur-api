@@ -1,6 +1,6 @@
-using NeonVertexApi.App.Modules.Shopping.Models;
+using CoeurApi.App.Modules.Shopping.Models;
 
-namespace NeonVertexApi.App.Modules.Shopping.Repositories;
+namespace CoeurApi.App.Modules.Shopping.Repositories;
 
 public interface IShoppingListRepository
 {

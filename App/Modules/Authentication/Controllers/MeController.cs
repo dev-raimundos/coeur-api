@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NeonVertexApi.App.Shared.Interfaces;
+using CoeurApi.App.Shared.Interfaces;
 
-namespace NeonVertexApi.App.Modules.Authentication.Controllers;
+namespace CoeurApi.App.Modules.Authentication.Controllers;
 
 [ApiController]
 [Route("api/auth")]

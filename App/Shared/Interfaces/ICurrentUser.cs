@@ -1,6 +1,6 @@
-using NeonVertexApi.App.Modules.Users.Models;
+using CoeurApi.App.Modules.Users.Models;
 
-namespace NeonVertexApi.App.Shared.Interfaces;
+namespace CoeurApi.App.Shared.Interfaces;
 
 public interface ICurrentUser
 {

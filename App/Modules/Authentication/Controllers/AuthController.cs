@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Options;
-using NeonVertexApi.App.Core.Settings;
-using NeonVertexApi.App.Modules.Authentication.DTOs;
-using NeonVertexApi.App.Modules.Authentication.Services;
+using CoeurApi.App.Core.Settings;
+using CoeurApi.App.Modules.Authentication.DTOs;
+using CoeurApi.App.Modules.Authentication.Services;
 
-namespace NeonVertexApi.App.Modules.Authentication.Controllers;
+namespace CoeurApi.App.Modules.Authentication.Controllers;
 
 [ApiController]
 [Route("api/auth")]

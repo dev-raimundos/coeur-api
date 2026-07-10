@@ -1,7 +1,7 @@
 using FluentValidation;
-using NeonVertexApi.App.Modules.Shopping.DTOs;
+using CoeurApi.App.Modules.Shopping.DTOs;
 
-namespace NeonVertexApi.App.Modules.Shopping.Validators;
+namespace CoeurApi.App.Modules.Shopping.Validators;
 
 public class CreateProductDtoValidator : AbstractValidator<CreateProductDto>
 {

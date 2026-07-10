@@ -1,6 +1,6 @@
-using NeonVertexApi.App.Modules.Shopping.Models;
+using CoeurApi.App.Modules.Shopping.Models;
 
-namespace NeonVertexApi.App.Modules.Shopping.DTOs;
+namespace CoeurApi.App.Modules.Shopping.DTOs;
 
 public record ListItemResponse(
     Guid Id,

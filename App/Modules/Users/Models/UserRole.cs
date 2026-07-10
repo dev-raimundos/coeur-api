@@ -1,4 +1,4 @@
-namespace NeonVertexApi.App.Modules.Users.Models;
+namespace CoeurApi.App.Modules.Users.Models;
 
 public enum UserRole
 {

@@ -10,15 +10,15 @@ USER $APP_UID
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS restore
 WORKDIR /src
-COPY ["NeonVertexApi.csproj", "./"]
-RUN dotnet restore "NeonVertexApi.csproj"
+COPY ["coeur-api.csproj", "./"]
+RUN dotnet restore "coeur-api.csproj"
 
 FROM restore AS build
 COPY . .
-RUN dotnet build "NeonVertexApi.csproj" -c Release -o /app/build --no-restore
+RUN dotnet build "coeur-api.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
-RUN dotnet publish "NeonVertexApi.csproj" -c Release -o /app/publish \
+RUN dotnet publish "coeur-api.csproj" -c Release -o /app/publish \
     --no-restore /p:UseAppHost=false
 
 FROM restore AS migrations
@@ -31,4 +31,4 @@ FROM base AS production
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENTRYPOINT ["dotnet", "NeonVertexApi.dll"]
+ENTRYPOINT ["dotnet", "coeur-api.dll"]

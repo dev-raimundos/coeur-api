@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using NeonVertexApi.App.Core.Database;
-using NeonVertexApi.App.Core.Extensions;
-using NeonVertexApi.App.Core.Pages;
-using NeonVertexApi.App.Modules.Authentication;
-using NeonVertexApi.App.Modules.Shopping;
-using NeonVertexApi.App.Modules.Users;
+using CoeurApi.App.Core.Database;
+using CoeurApi.App.Core.Extensions;
+using CoeurApi.App.Core.Pages;
+using CoeurApi.App.Modules.Authentication;
+using CoeurApi.App.Modules.Shopping;
+using CoeurApi.App.Modules.Users;
 using Scalar.AspNetCore;
 
-namespace NeonVertexApi;
+namespace CoeurApi;
 
 public static class Program
 {
