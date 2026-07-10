@@ -15,11 +15,11 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         {
             await WriteResponseAsync(context, ex.StatusCode, ex.Message, ex.ToastType, ex.Errors);
         }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Erro inesperado: {Message}", ex.Message);
-                await WriteResponseAsync(context, 500, "Erro interno do servidor.", "error");
-            }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Erro inesperado: {Message}", ex.Message);
+            await WriteResponseAsync(context, 500, "Erro interno do servidor.", "error");
+        }
     }
 
     private static async Task WriteResponseAsync(
