@@ -66,6 +66,10 @@ coeur-api/
 │           ├── Services/
 │           └── UsersModule.cs
 │
+├── tests/
+│   └── CoeurApi.Tests/                # Projeto de testes (xUnit + Moq), separado do artefato publicável
+│       └── Modules/                   # Espelha os módulos de App/Modules
+│
 ├── Program.cs
 ├── appsettings.json
 ├── Dockerfile
@@ -238,6 +242,16 @@ A documentação interativa (Scalar) estará disponível em:
 
 ---
 
+## Testes
+
+Os testes ficam em `tests/CoeurApi.Tests`, um projeto xUnit + Moq separado do artefato publicável (excluído do build do `coeur-api.csproj` e referenciando a API principal via `ProjectReference`).
+
+```bash
+dotnet test
+```
+
+---
+
 ## Produção (Docker)
 
 O Dockerfile utiliza multi-stage build — a imagem de produção parte da imagem `aspnet` sem SDK, resultando em uma imagem final enxuta.
@@ -247,9 +261,10 @@ Em produção, a API é exposta via **Nginx Proxy Manager** na rede Docker inter
 ### Build e deploy
 
 ```bash
-task build    # rebuilda a imagem sem cache
-task up       # sobe em background
-task deploy   # build + up em um comando
+task build     # builda a imagem
+task rebuild   # builda a imagem sem cache
+task start     # sobe a stack em background
+task deploy    # build + start em um comando
 ```
 
 ### Gerenciamento

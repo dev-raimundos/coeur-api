@@ -18,6 +18,7 @@ ASP.NET Core 10 (C# 14) REST API, EF Core 10 targeting **SQL Server** (`Microsof
 dotnet restore                          # restore dependencies
 dotnet run                              # run locally (https://localhost:7209, http://localhost:5148)
 dotnet build                            # build
+dotnet test                             # run the test project (tests/CoeurApi.Tests)
 ```
 
 Migrations (applied automatically on startup via `MigrateAsync()` in `Program.cs` — no manual step needed in prod):
@@ -40,7 +41,7 @@ task shell      # shell into the api container
 task migrate -- <Name>   # dotnet ef migrations add <Name> locally
 ```
 
-There is no test project in this repo currently — no test runner command exists.
+Tests live in `tests/CoeurApi.Tests` (xUnit + Moq), a separate project referencing the main one via `ProjectReference` — kept out of the main `coeur-api.csproj` build (`Compile Remove="tests\**"`) so test dependencies never ship in the production artifact.
 
 ## Local setup
 
