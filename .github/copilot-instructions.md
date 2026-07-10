@@ -26,7 +26,18 @@
 - Snake_case no banco via `UseSnakeCaseNamingConvention`
 - Datas sempre em UTC
 
-## Commits
-- Sempre escreva mensagens de commit em Português Brasileiro
-- Use commits semânticos: feat, fix, docs, refactor, chore, test
-- Seja descritivo e detalhado na mensagem
+## Mensagens de commit
+
+- Escreva SEMPRE em português brasileiro, nunca em inglês. Isso vale para o título e para o corpo da mensagem.
+- Use commits semânticos: feat, fix, docs, refactor, chore, test (o prefixo continua em inglês, o resto da frase em português).
+- Seja descritivo e detalhado na mensagem, explicando o porquê da mudança, não só o quê.
+
+Exemplo:
+
+```
+fix: corrige validação de e-mail duplicado no cadastro de usuário
+
+Antes o serviço permitia criar dois usuários com o mesmo e-mail em
+maiúsculas/minúsculas diferentes, pois a checagem não normalizava o
+valor antes de comparar.
+```
