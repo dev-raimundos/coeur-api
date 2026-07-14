@@ -1,10 +1,11 @@
-using CoeurApi.App.Core.Authentication;
-using CoeurApi.App.Core.Settings;
-using CoeurApi.App.Modules.Authentication.DTOs;
-using CoeurApi.App.Modules.Authentication.Services;
-using CoeurApi.App.Modules.Users.Models;
-using CoeurApi.App.Shared.Exceptions;
-using CoeurApi.App.Shared.Interfaces;
+using CoeurApi.Modules.Authentication.Infrastructure.Security;
+using CoeurApi.Modules.Authentication.Infrastructure.Settings;
+using CoeurApi.Modules.Authentication.Application.DTOs;
+using CoeurApi.Modules.Authentication.Application.Services;
+using CoeurApi.Modules.Users.Domain;
+using CoeurApi.SharedKernel.Exceptions;
+using CoeurApi.Modules.Users.Application.Abstractions;
+using CoeurApi.SharedKernel.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 

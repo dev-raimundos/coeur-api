@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\coeur-api.csproj" />
+    <ProjectReference Include="..\..\src\modules\Users\Users.csproj" />
+    <ProjectReference Include="..\..\src\modules\Authentication\Authentication.csproj" />
+    <ProjectReference Include="..\..\src\modules\Shopping\Shopping.csproj" />
   </ItemGroup>
 
 </Project>

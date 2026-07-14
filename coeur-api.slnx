@@ -1,6 +1,16 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SharedKernel/SharedKernel.csproj" />
+    <Project Path="src/Application/Application.csproj" />
+    <Project Path="src/Infrastructure/Infrastructure.csproj" />
+    <Project Path="src/Api/Api.csproj" />
+  </Folder>
+  <Folder Name="/src/modules/">
+    <Project Path="src/modules/Users/Users.csproj" />
+    <Project Path="src/modules/Authentication/Authentication.csproj" />
+    <Project Path="src/modules/Shopping/Shopping.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CoeurApi.Tests/CoeurApi.Tests.csproj" />
   </Folder>
-  <Project Path="coeur-api.csproj" />
 </Solution>

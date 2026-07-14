@@ -1,8 +1,9 @@
-using CoeurApi.App.Modules.Users.DTOs;
-using CoeurApi.App.Modules.Users.Models;
-using CoeurApi.App.Modules.Users.Services;
-using CoeurApi.App.Shared.Exceptions;
-using CoeurApi.App.Shared.Interfaces;
+using CoeurApi.Modules.Users.Application.DTOs;
+using CoeurApi.Modules.Users.Domain;
+using CoeurApi.Modules.Users.Application.Services;
+using CoeurApi.SharedKernel.Exceptions;
+using CoeurApi.Modules.Users.Application.Abstractions;
+using CoeurApi.SharedKernel.Abstractions;
 using Moq;
 
 namespace CoeurApi.Tests.Modules.Users;

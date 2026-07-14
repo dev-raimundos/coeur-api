@@ -68,4 +68,4 @@ tasks:
   migrate:
     desc: "Cria uma nova migration (uso local). Ex: task migrate -- NomeDaMigration"
     cmds:
-      - dotnet ef migrations add {{.CLI_ARGS}}
+      - dotnet ef migrations add {{.CLI_ARGS}} --project src/Infrastructure --startup-project src/Api

@@ -1,7 +1,7 @@
-using CoeurApi.App.Modules.Shopping.Models;
-using CoeurApi.App.Modules.Shopping.Repositories;
-using CoeurApi.App.Modules.Shopping.Services.ShoppingLists;
-using CoeurApi.App.Shared.Exceptions;
+using CoeurApi.Modules.Shopping.Domain;
+using CoeurApi.Modules.Shopping.Application.Abstractions;
+using CoeurApi.Modules.Shopping.Application.Services.ShoppingLists;
+using CoeurApi.SharedKernel.Exceptions;
 using Moq;
 
 namespace CoeurApi.Tests.Modules.Shopping;
