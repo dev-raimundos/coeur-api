@@ -8,6 +8,7 @@
   <Folder Name="/src/modules/">
     <Project Path="src/modules/Users/Users.csproj" />
     <Project Path="src/modules/Authentication/Authentication.csproj" />
+    <Project Path="src/modules/Finances/Finances.csproj" Id="1b1f02bc-e3bd-4ea4-b7f0-b48b584705f1" />
     <Project Path="src/modules/Shopping/Shopping.csproj" />
   </Folder>
   <Folder Name="/tests/">

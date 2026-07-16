@@ -12,10 +12,6 @@ public class CurrentUserService(IHttpContextAccessor accessor) : ICurrentUser
     public string Email => User?.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
     public string Name => User?.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
     public bool IsAuthenticated => User?.Identity?.IsAuthenticated ?? false;
-
-    public UserRole Role => Enum.TryParse<UserRole>(User?.FindFirstValue(ClaimTypes.Role), out var role)
-        ? role
-        : UserRole.User;
-
+    public UserRole Role => Enum.TryParse<UserRole>(User?.FindFirstValue(ClaimTypes.Role), out var role) ? role : UserRole.User;
     public bool IsAdmin => Role == UserRole.Admin;
 }
