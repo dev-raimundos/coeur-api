@@ -5,11 +5,30 @@
     <Project Path="src/Infrastructure/Infrastructure.csproj" />
     <Project Path="src/Api/Api.csproj" />
   </Folder>
-  <Folder Name="/src/modules/">
-    <Project Path="src/modules/Users/Users.csproj" />
-    <Project Path="src/modules/Authentication/Authentication.csproj" />
-    <Project Path="src/modules/Finances/Finances.csproj" Id="1b1f02bc-e3bd-4ea4-b7f0-b48b584705f1" />
-    <Project Path="src/modules/Shopping/Shopping.csproj" />
+  <Folder Name="/src/Modules/">
+    <Folder Name="/src/Modules/Users/">
+      <Project Path="src/Modules/Users/Users.Domain/Users.Domain.csproj" />
+      <Project Path="src/Modules/Users/Users.Application/Users.Application.csproj" />
+      <Project Path="src/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj" />
+      <Project Path="src/Modules/Users/Users.Presentation/Users.Presentation.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Authentication/">
+      <Project Path="src/Modules/Authentication/Authentication.Application/Authentication.Application.csproj" />
+      <Project Path="src/Modules/Authentication/Authentication.Infrastructure/Authentication.Infrastructure.csproj" />
+      <Project Path="src/Modules/Authentication/Authentication.Presentation/Authentication.Presentation.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Shopping/">
+      <Project Path="src/Modules/Shopping/Shopping.Domain/Shopping.Domain.csproj" />
+      <Project Path="src/Modules/Shopping/Shopping.Application/Shopping.Application.csproj" />
+      <Project Path="src/Modules/Shopping/Shopping.Infrastructure/Shopping.Infrastructure.csproj" />
+      <Project Path="src/Modules/Shopping/Shopping.Presentation/Shopping.Presentation.csproj" />
+    </Folder>
+    <Folder Name="/src/Modules/Finances/">
+      <Project Path="src/Modules/Finances/Finances.Domain/Finances.Domain.csproj" Id="1b1f02bc-e3bd-4ea4-b7f0-b48b584705f1" />
+      <Project Path="src/Modules/Finances/Finances.Application/Finances.Application.csproj" />
+      <Project Path="src/Modules/Finances/Finances.Infrastructure/Finances.Infrastructure.csproj" />
+      <Project Path="src/Modules/Finances/Finances.Presentation/Finances.Presentation.csproj" />
+    </Folder>
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/CoeurApi.Tests/CoeurApi.Tests.csproj" />

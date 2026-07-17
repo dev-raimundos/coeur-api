@@ -6,6 +6,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>4766a3da-221a-420c-90c1-c11b5c6b2eb3</UserSecretsId>
 		<RootNamespace>CoeurApi.Api</RootNamespace>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,6 +18,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
 		<PackageReference Include="Scalar.AspNetCore" Version="2.16.11" />
 	</ItemGroup>
 
@@ -23,9 +26,12 @@
 		<ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
 		<ProjectReference Include="..\Application\Application.csproj" />
 		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-		<ProjectReference Include="..\modules\Users\Users.csproj" />
-		<ProjectReference Include="..\modules\Authentication\Authentication.csproj" />
-		<ProjectReference Include="..\modules\Shopping\Shopping.csproj" />
+		<ProjectReference Include="..\Modules\Users\Users.Infrastructure\Users.Infrastructure.csproj" />
+		<ProjectReference Include="..\Modules\Users\Users.Presentation\Users.Presentation.csproj" />
+		<ProjectReference Include="..\Modules\Authentication\Authentication.Infrastructure\Authentication.Infrastructure.csproj" />
+		<ProjectReference Include="..\Modules\Authentication\Authentication.Presentation\Authentication.Presentation.csproj" />
+		<ProjectReference Include="..\Modules\Shopping\Shopping.Infrastructure\Shopping.Infrastructure.csproj" />
+		<ProjectReference Include="..\Modules\Shopping\Shopping.Presentation\Shopping.Presentation.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -28,8 +28,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
 		<ProjectReference Include="..\Application\Application.csproj" />
-		<ProjectReference Include="..\modules\Users\Users.csproj" />
-		<ProjectReference Include="..\modules\Shopping\Shopping.csproj" />
+		<ProjectReference Include="..\Modules\Users\Users.Domain\Users.Domain.csproj" />
+		<ProjectReference Include="..\Modules\Shopping\Shopping.Domain\Shopping.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

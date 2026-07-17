@@ -1,5 +1,5 @@
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
-using CoeurApi.Modules.Authentication.Infrastructure.Settings;
+using CoeurApi.Modules.Authentication.Application.Settings;
 using CoeurApi.Modules.Authentication.Application.DTOs;
 using CoeurApi.Modules.Authentication.Application.Services;
 using CoeurApi.Modules.Users.Domain;
