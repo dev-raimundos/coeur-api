@@ -7,7 +7,7 @@ public class ShoppingListConfiguration : IEntityTypeConfiguration<ShoppingList>
 {
     public void Configure(EntityTypeBuilder<ShoppingList> builder)
     {
-        builder.ToTable("shopping_lists");
+        builder.ToTable("shopping_lists", "shopping");
 
         builder.HasKey(l => l.Id);
 

@@ -7,7 +7,7 @@ public class ListItemConfiguration : IEntityTypeConfiguration<ListItem>
 {
     public void Configure(EntityTypeBuilder<ListItem> builder)
     {
-        builder.ToTable("list_items");
+        builder.ToTable("list_items", "shopping");
 
         builder.HasKey(i => i.Id);
 
