@@ -101,8 +101,9 @@ coeur-api/
 │                                       # Authentication.Application/.Infrastructure, Shopping.Domain/.Application)
 │
 ├── coeur-api.slnx
-├── Dockerfile
-├── compose.yaml
+├── docker-compose.dcproj
+├── docker-compose.yml
+├── docker-compose.override.yml
 └── Taskfile.yaml
 ```
 
@@ -253,7 +254,7 @@ No Visual Studio, o gerenciador de User Secrets está disponível clicando com o
 
 ### 3. Variáveis de ambiente (produção)
 
-Em produção, a configuração vem de variáveis de ambiente (ver `compose.yaml`). Copie o exemplo e preencha:
+Em produção, a configuração vem de variáveis de ambiente (ver `docker-compose.yml`). Copie o exemplo e preencha:
 
 ```bash
 cp .env.example .env

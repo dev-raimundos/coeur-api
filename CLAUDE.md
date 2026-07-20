@@ -10,7 +10,7 @@ Respond in Brazilian Portuguese (pt-BR). Commit messages and code comments must 
 
 ASP.NET Core 10 (C# 14) REST API, EF Core 10 targeting **PostgreSQL 17** (`Npgsql.EntityFrameworkCore.PostgreSQL` + `UseNpgsql`). JWT auth via HTTP-only cookie (`access_token`), BCrypt.Net-Next for password hashing, FluentValidation for input validation, Scalar for OpenAPI docs.
 
-> **Note:** `.github/copilot-instructions.md` predates the multi-project module split (it still describes an `App/Core`/`App/Shared`/`App/Modules` folder layout instead of `src/Modules/<Module>/<Module>.<Layer>`) and claims a `snake_case` naming convention (`UseSnakeCaseNamingConvention`) that isn't actually configured — columns use EF Core's default naming; only table/schema names are set explicitly per module. Its mention of PostgreSQL/Npgsql as the database is accurate again now that the project has moved back from SQL Server. `README.md` was updated alongside this file and reflects the current architecture; trust the code (`DependencyInjection.cs`, `.env.example`, `compose.yaml`) over `copilot-instructions.md` for connection/database and naming details.
+> **Note:** `.github/copilot-instructions.md` predates the multi-project module split (it still describes an `App/Core`/`App/Shared`/`App/Modules` folder layout instead of `src/Modules/<Module>/<Module>.<Layer>`) and claims a `snake_case` naming convention (`UseSnakeCaseNamingConvention`) that isn't actually configured — columns use EF Core's default naming; only table/schema names are set explicitly per module. Its mention of PostgreSQL/Npgsql as the database is accurate again now that the project has moved back from SQL Server. `README.md` was updated alongside this file and reflects the current architecture; trust the code (`DependencyInjection.cs`, `.env.example`, `docker-compose.yml`) over `copilot-instructions.md` for connection/database and naming details.
 
 ## Commands
 
@@ -52,7 +52,7 @@ dotnet user-secrets set "ConnectionStrings:Default" "Host=...;Port=5432;Database
 dotnet user-secrets set "Jwt:Secret" "<32+ char secret>"
 ```
 
-Production reads config from env vars (see `compose.yaml`): `ConnectionStrings__Default`, `Jwt__Secret`, `Jwt__Issuer`, `Jwt__Audience`, `Jwt__ExpirationHours`, `AllowedHosts`.
+Production reads config from env vars (see `docker-compose.yml`): `ConnectionStrings__Default`, `Jwt__Secret`, `Jwt__Issuer`, `Jwt__Audience`, `Jwt__ExpirationHours`, `AllowedHosts`.
 
 ## Architecture: Clean Architecture + Modular Monolith (multi-project)
 
