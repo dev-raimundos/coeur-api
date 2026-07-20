@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using CoeurApi.Modules.Authentication.Application.DTOs;
 using CoeurApi.Modules.Authentication.Application.Services;
@@ -10,7 +11,7 @@ namespace CoeurApi.Modules.Authentication.Presentation;
 
 [ApiController]
 [Route("api/v1/auth")]
-public class AuthController(LoginService loginService, IOptions<JwtSettings> jwtSettings) : ControllerBase
+public class AuthController(LoginService loginService, IOptions<JwtSettings> jwtSettings, IHostEnvironment environment) : ControllerBase
 {
     [HttpPost("login")]
     [AllowAnonymous]
@@ -27,13 +28,15 @@ public class AuthController(LoginService loginService, IOptions<JwtSettings> jwt
         var response = result.Response;
         var token = result.Token;
 
-        // Strict funciona pois front (coeur.app.br) e API (api.coeur.app.br) são same-site
-        // (mesmo domínio registrável) — se o front algum dia sair desse domínio, isso quebra
-        // e precisa virar SameSite.None (com Secure=true obrigatório).
+        // Secure=false em Development pois o front local roda em http://localhost — um cookie
+        // Secure nunca é aceito pelo navegador fora de HTTPS. Strict funciona nos dois ambientes
+        // pois front e API são same-site (coeur.app.br/api.coeur.app.br em prod, localhost nos dois
+        // em dev) — se o front algum dia sair desse domínio, isso quebra e precisa virar
+        // SameSite.None (com Secure=true obrigatório).
         Response.Cookies.Append("access_token", token, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = environment.IsProduction(),
             SameSite = SameSiteMode.Strict,
             Expires = DateTimeOffset.UtcNow.AddHours(jwtSettings.Value.ExpirationHours)
         });

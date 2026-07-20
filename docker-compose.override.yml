@@ -1,4 +1,8 @@
 services:
   api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AllowedHosts=localhost
+      - Cors__AllowedOrigins=http://localhost:4200
     ports:
       - "8000:8000"
