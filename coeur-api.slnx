@@ -6,7 +6,6 @@
     <File Path=".gitignore" />
     <File Path="CLAUDE.md" />
     <File Path="compose.yaml" />
-    <File Path="Dockerfile" />
     <File Path="LICENSE.txt" />
     <File Path="README.md" />
     <File Path="Taskfile.yaml" />
@@ -23,6 +22,7 @@
     <Project Path="src/Modules/Users/Users.Infrastructure/Users.Infrastructure.csproj" />
     <Project Path="src/Modules/Users/Users.Presentation/Users.Presentation.csproj" />
   </Folder>
+  <Folder Name="/src/Modules/" />
   <Folder Name="/src/Modules/Authentication/">
     <Project Path="src/Modules/Authentication/Authentication.Application/Authentication.Application.csproj" />
     <Project Path="src/Modules/Authentication/Authentication.Infrastructure/Authentication.Infrastructure.csproj" />
@@ -43,4 +43,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/CoeurApi.Tests/CoeurApi.Tests.csproj" />
   </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
 </Solution>

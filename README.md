@@ -12,8 +12,8 @@ O projeto foi construído com foco em clareza de código, convenções consisten
 |---|---|---|
 | .NET | 10 | Runtime |
 | ASP.NET Core | 10 | Framework web |
-| SQL Server | 2022 | Banco de dados |
-| Entity Framework Core | 10 | ORM (`Microsoft.EntityFrameworkCore.SqlServer`) |
+| PostgreSQL | 17 | Banco de dados |
+| Entity Framework Core | 10 | ORM (`Npgsql.EntityFrameworkCore.PostgreSQL`) |
 | JWT (HTTP-only cookie) | — | Autenticação |
 | BCrypt.Net-Next | — | Hash de senhas |
 | FluentValidation | — | Validação de entrada |
@@ -151,7 +151,7 @@ coeur-api/
 - **`<Using>` globais**: cada projeto só declara os globais que realmente usa de forma pervasiva (`Microsoft.AspNetCore.Http`, `Microsoft.Extensions.DependencyInjection`, `Microsoft.Extensions.Configuration`), não uma lista padrão copiada em todo `.csproj`.
 - **`<RootNamespace>`**: definido explicitamente em todo projeto — `CoeurApi.<Projeto>` em `src/*` e `CoeurApi.Modules.<Módulo>.<Camada>` em `src/Modules/*/*` (`CoeurApi.Modules.Users.Domain`, `CoeurApi.Modules.Users.Application`, ...) — em vez de depender do default do SDK derivado do nome da pasta, para uma pasta poder ser renomeada sem renomear silenciosamente todo o namespace.
 - **Direção do `<ProjectReference>`** segue sempre a regra de dependência do diagrama acima, agora também no nível da camada: `Domain → SharedKernel` (no máximo); `Application → Domain` + `Application` raiz (só se algum service precisar de `ICurrentUser`); `Infrastructure → Application` apenas (`Domain` chega transitivamente); `Presentation → Application` (+ `Application` raiz direto, só se um controller injetar `ICurrentUser`). `Infrastructure` e `Presentation` nunca se referenciam. Referências entre módulos apontam pra camada específica que é compartilhada (`Shopping.Domain → Users.Domain`, `Authentication.Application → Users.Application`), nunca pro módulo inteiro. `Infrastructure`/`Api` na raiz nunca são referenciados por um módulo (formaria ciclo) — o `Infrastructure` raiz referencia só o `Domain` de cada módulo; `Api` referencia o `Infrastructure` (por `Add<Módulo>Module()`) e o `Presentation` (pros controllers) de cada módulo. Se uma referência na direção errada não compila, é a separação em múltiplos projetos fazendo seu trabalho.
-- **Onde colocar cada `PackageReference`**: no projeto que realmente usa o pacote, não centralizado no host — `BCrypt.Net-Next` fica em `Users.Application`/`Authentication.Application`, `Microsoft.EntityFrameworkCore`+`.Relational` no `Domain` de cada módulo (por causa de `IEntityTypeConfiguration<T>`) e `Microsoft.EntityFrameworkCore` puro de novo na `Infrastructure` do módulo (por causa de `DbContext`/`Set<T>()` no repository) — nunca em `Api`, que não fala com EF Core diretamente. O provider `Microsoft.EntityFrameworkCore.SqlServer` + a tooling `Microsoft.EntityFrameworkCore.Design` ficam só no `Infrastructure` raiz. `Api` também carrega sua própria referência a `Microsoft.EntityFrameworkCore.Design`, porque o `dotnet ef` resolve a tooling de design-time a partir do projeto de **startup**, não só do projeto dono do `DbContext` — daí `--project src/Infrastructure --startup-project src/Api` em todo comando `dotnet ef`.
+- **Onde colocar cada `PackageReference`**: no projeto que realmente usa o pacote, não centralizado no host — `BCrypt.Net-Next` fica em `Users.Application`/`Authentication.Application`, `Microsoft.EntityFrameworkCore`+`.Relational` no `Domain` de cada módulo (por causa de `IEntityTypeConfiguration<T>`) e `Microsoft.EntityFrameworkCore` puro de novo na `Infrastructure` do módulo (por causa de `DbContext`/`Set<T>()` no repository) — nunca em `Api`, que não fala com EF Core diretamente. O provider `Npgsql.EntityFrameworkCore.PostgreSQL` + a tooling `Microsoft.EntityFrameworkCore.Design` ficam só no `Infrastructure` raiz. `Api` também carrega sua própria referência a `Microsoft.EntityFrameworkCore.Design`, porque o `dotnet ef` resolve a tooling de design-time a partir do projeto de **startup**, não só do projeto dono do `DbContext` — daí `--project src/Infrastructure --startup-project src/Api` em todo comando `dotnet ef`.
 - **Registro de validators**: a `Infrastructure` de cada módulo carrega a referência a `FluentValidation.DependencyInjectionExtensions` e chama `AddValidatorsFromAssemblyContaining<T>()` dentro do seu próprio `Add<Módulo>Module()` — os validators em si ficam em `Application` (que só precisa do pacote `FluentValidation` puro), nunca um scan único a partir de `Api`.
 
 ### Um único `AppDbContext` compartilhado, não um por módulo
@@ -225,7 +225,7 @@ Todas as rotas são prefixadas com `api/v1/...` (ex.: `[Route("api/v1/users")]`)
 ## Pré-requisitos
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [SQL Server](https://www.microsoft.com/sql-server) (local ou em container)
+- [PostgreSQL 17](https://www.postgresql.org/) (local ou em container)
 - [Task](https://taskfile.dev/) *(opcional, para comandos facilitados)*
 - [Docker](https://www.docker.com/) *(opcional, para produção)*
 
@@ -245,7 +245,7 @@ cd coeur-api
 O desenvolvimento local usa o mecanismo de **User Secrets** do .NET, não um arquivo `.env` — as credenciais ficam fora do repositório:
 
 ```bash
-dotnet user-secrets set "ConnectionStrings:Default" "Server=...;Database=...;UID=...;Password=...;TrustServerCertificate=True;"
+dotnet user-secrets set "ConnectionStrings:Default" "Host=...;Port=5432;Database=...;Username=...;Password=..."
 dotnet user-secrets set "Jwt:Secret" "<secret com pelo menos 32 caracteres>"
 ```
 
@@ -260,7 +260,7 @@ cp .env.example .env
 ```
 
 ```env
-MSSQL_CONNECTION=Server=;Database=;UID=;Password=;TrustServerCertificate=True;
+POSTGRES_CONNECTION=Host=;Port=5432;Database=;Username=;Password=;
 JWT__SECRET=
 JWT__ISSUER=coeur-api
 JWT__AUDIENCE=coeur-api
