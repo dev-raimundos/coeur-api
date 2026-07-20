@@ -2,6 +2,7 @@ services:
   api:
     container_name: coeur-api
     image: coeur-api:latest
+    pull_policy: build
     build:
       context: .
       dockerfile: src/Api/Dockerfile
