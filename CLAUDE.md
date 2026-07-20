@@ -29,16 +29,15 @@ dotnet ef migrations list --project src/Infrastructure --startup-project src/Api
 dotnet ef migrations remove --project src/Infrastructure --startup-project src/Api
 ```
 
-Docker/production, via `Taskfile.yaml` (requires `task` CLI):
+Docker/production, via the Visual Studio-generated Compose project (`docker-compose.dcproj`, `docker-compose.yml` + `docker-compose.override.yml`) — run through Visual Studio's "Docker Compose" launch profile, or directly with the CLI:
 
 ```bash
-task build      # docker compose build
-task rebuild    # build --no-cache
-task start      # up -d
-task deploy      # build + start
-task logs       # follow API logs
-task shell      # shell into the api container
-task migrate -- <Name>   # dotnet ef migrations add <Name> locally (src/Infrastructure, startup src/Api)
+docker compose build              # build the image
+docker compose build --no-cache   # rebuild without cache
+docker compose up -d              # start the stack in the background
+docker compose logs -f api        # follow API logs
+docker compose exec api /bin/sh   # shell into the api container
+docker compose down               # tear down the stack
 ```
 
 Tests live in `tests/CoeurApi.Tests` (xUnit + Moq), a separate project referencing the specific layer projects it exercises (`Users.Domain`/`Users.Application`, `Authentication.Application`/`Authentication.Infrastructure`, `Shopping.Domain`/`Shopping.Application`) via `ProjectReference` — it lives outside `src/`, so it never gets pulled into any module's or the host's build, and test dependencies never ship in the production artifact.

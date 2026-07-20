@@ -103,8 +103,7 @@ coeur-api/
 ├── coeur-api.slnx
 ├── docker-compose.dcproj
 ├── docker-compose.yml
-├── docker-compose.override.yml
-└── Taskfile.yaml
+└── docker-compose.override.yml
 ```
 
 ### Anatomia de um módulo
@@ -293,8 +292,6 @@ dotnet ef migrations remove --project src/Infrastructure --startup-project src/A
 
 > O EF Core tools precisa estar instalado: `dotnet tool install --global dotnet-ef`
 
-Via Task: `task migrate -- NomeDaMigration`.
-
 ---
 
 ## Executando
@@ -330,22 +327,23 @@ O Dockerfile utiliza multi-stage build — a imagem de produção parte da image
 
 Em produção, a API é exposta via **Nginx Proxy Manager** na rede Docker interna, sem expor portas diretamente no host.
 
+Build e deploy são feitos pelo Compose gerado pelo Visual Studio (`docker-compose.dcproj`, `docker-compose.yml` + `docker-compose.override.yml`) — via o profile "Docker Compose" do VS, ou diretamente pela CLI:
+
 ### Build e deploy
 
 ```bash
-task build     # builda a imagem
-task rebuild   # builda a imagem sem cache
-task start     # sobe a stack em background
-task deploy    # build + start em um comando
+docker compose build              # builda a imagem
+docker compose build --no-cache   # builda a imagem sem cache
+docker compose up -d              # sobe a stack em background
 ```
 
 ### Gerenciamento
 
 ```bash
-task logs      # exibe logs em tempo real
-task restart   # reinicia o container
-task shell     # abre shell no container
-task down      # derruba os containers
+docker compose logs -f api        # exibe logs em tempo real
+docker compose restart api        # reinicia o container
+docker compose exec api /bin/sh   # abre shell no container
+docker compose down               # derruba os containers
 ```
 
 ---
