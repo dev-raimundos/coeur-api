@@ -17,5 +17,6 @@
     <None Include=".env.example">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
+    <None Include="Dockerfile" />
   </ItemGroup>
 </Project>
