@@ -32,6 +32,7 @@ public class AuthController(LoginUseCase login, IOptions<JwtSettings> jwtSetting
         // pois front e API são same-site (coeur.app.br/api.coeur.app.br em prod, localhost nos dois
         // em dev) — se o front algum dia sair desse domínio, isso quebra e precisa virar
         // SameSite.None (com Secure=true obrigatório).
+#pragma warning disable S2092
         Response.Cookies.Append("access_token", token, new CookieOptions
         {
             HttpOnly = true,
@@ -39,6 +40,7 @@ public class AuthController(LoginUseCase login, IOptions<JwtSettings> jwtSetting
             SameSite = SameSiteMode.Strict,
             Expires = DateTimeOffset.UtcNow.AddHours(jwtSettings.Value.ExpirationHours)
         });
+#pragma warning restore S2092
 
         return Ok(response);
     }
