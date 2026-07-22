@@ -1,8 +1,7 @@
 using FluentValidation;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
-using CoeurApi.Modules.Shopping.Application.Services.Products;
-using CoeurApi.Modules.Shopping.Application.Services.ShoppingLists;
-using CoeurApi.Modules.Shopping.Application.Validators;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists;
 using CoeurApi.Modules.Shopping.Infrastructure;
 
 namespace CoeurApi.Modules.Shopping;
@@ -14,23 +13,23 @@ public static class ShoppingModule
         services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
 
-        services.AddScoped<GetAllProductsService>();
-        services.AddScoped<GetProductByIdService>();
-        services.AddScoped<CreateProductService>();
-        services.AddScoped<UpdateProductService>();
-        services.AddScoped<DeleteProductService>();
+        services.AddScoped<GetAllProductsUseCase>();
+        services.AddScoped<GetProductByIdUseCase>();
+        services.AddScoped<CreateProductUseCase>();
+        services.AddScoped<UpdateProductUseCase>();
+        services.AddScoped<DeleteProductUseCase>();
 
-        services.AddScoped<GetOwnedShoppingListService>();
-        services.AddScoped<GetAllShoppingListsService>();
-        services.AddScoped<GetShoppingListByIdService>();
-        services.AddScoped<CreateShoppingListService>();
-        services.AddScoped<UpdateShoppingListService>();
-        services.AddScoped<DeleteShoppingListService>();
-        services.AddScoped<AddShoppingListItemService>();
-        services.AddScoped<UpdateShoppingListItemService>();
-        services.AddScoped<RemoveShoppingListItemService>();
+        services.AddScoped<GetOwnedShoppingListUseCase>();
+        services.AddScoped<GetAllShoppingListsUseCase>();
+        services.AddScoped<GetShoppingListByIdUseCase>();
+        services.AddScoped<CreateShoppingListUseCase>();
+        services.AddScoped<UpdateShoppingListUseCase>();
+        services.AddScoped<DeleteShoppingListUseCase>();
+        services.AddScoped<AddShoppingListItemUseCase>();
+        services.AddScoped<UpdateShoppingListItemUseCase>();
+        services.AddScoped<RemoveShoppingListItemUseCase>();
 
-        services.AddValidatorsFromAssemblyContaining<CreateProductDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
 
         return services;
     }

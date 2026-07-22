@@ -1,7 +1,6 @@
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
 using CoeurApi.Modules.Authentication.Application.Settings;
-using CoeurApi.Modules.Authentication.Application.DTOs;
-using CoeurApi.Modules.Authentication.Application.Services;
+using CoeurApi.Modules.Authentication.Application.UseCases;
 using CoeurApi.Modules.Users.Domain;
 using CoeurApi.SharedKernel.Exceptions;
 using CoeurApi.Modules.Users.Application.Abstractions;
@@ -11,7 +10,7 @@ using Moq;
 
 namespace CoeurApi.Tests.Modules.Authentication;
 
-public class LoginServiceTests
+public class LoginUseCaseTests
 {
     private readonly Mock<IUsersRepository> _repository = new();
     private readonly Mock<IUnitOfWork> _unitOfWork = new();
@@ -24,7 +23,7 @@ public class LoginServiceTests
         ExpirationHours = 1
     }));
 
-    private LoginService CreateService() => new(_repository.Object, _tokenService, _unitOfWork.Object);
+    private LoginUseCase CreateUseCase() => new(_repository.Object, _tokenService, _unitOfWork.Object);
 
     private static User CreateActiveUser(string password = "senha-correta")
         => User.Create("Fulano", "fulano@teste.com", BCrypt.Net.BCrypt.HashPassword(password));
@@ -35,10 +34,10 @@ public class LoginServiceTests
         _repository.Setup(r => r.GetByEmailAsync("naoexiste@teste.com", It.IsAny<CancellationToken>()))
             .ReturnsAsync((User?)null);
 
-        var service = CreateService();
-        var dto = new LoginDto("naoexiste@teste.com", "qualquer-senha");
+        var useCase = CreateUseCase();
+        var request = new LoginRequest("naoexiste@teste.com", "qualquer-senha");
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(dto));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(request));
 
         Assert.Equal(401, ex.StatusCode);
     }
@@ -50,10 +49,10 @@ public class LoginServiceTests
         _repository.Setup(r => r.GetByEmailAsync(user.Email, It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
-        var service = CreateService();
-        var dto = new LoginDto(user.Email, "senha-errada");
+        var useCase = CreateUseCase();
+        var request = new LoginRequest(user.Email, "senha-errada");
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(dto));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(request));
 
         Assert.Equal(401, ex.StatusCode);
         Assert.Equal(1, user.FailedLoginAttempts);
@@ -70,10 +69,10 @@ public class LoginServiceTests
         _repository.Setup(r => r.GetByEmailAsync(user.Email, It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
-        var service = CreateService();
-        var dto = new LoginDto(user.Email, "senha-correta");
+        var useCase = CreateUseCase();
+        var request = new LoginRequest(user.Email, "senha-correta");
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(dto));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(request));
 
         Assert.Equal(429, ex.StatusCode);
     }
@@ -85,10 +84,10 @@ public class LoginServiceTests
         _repository.Setup(r => r.GetByEmailAsync(user.Email, It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
-        var service = CreateService();
-        var dto = new LoginDto(user.Email, "senha-correta");
+        var useCase = CreateUseCase();
+        var request = new LoginRequest(user.Email, "senha-correta");
 
-        var (response, token) = await service.ExecuteAsync(dto);
+        var (response, token) = await useCase.ExecuteAsync(request);
 
         Assert.False(string.IsNullOrWhiteSpace(token));
         Assert.Equal(user.Email, response.User.Email);

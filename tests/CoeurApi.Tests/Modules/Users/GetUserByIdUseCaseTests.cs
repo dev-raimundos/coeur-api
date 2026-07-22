@@ -1,18 +1,18 @@
 using CoeurApi.Modules.Users.Application.Abstractions;
 using CoeurApi.Modules.Users.Domain;
-using CoeurApi.Modules.Users.Application.Services;
+using CoeurApi.Modules.Users.Application.UseCases;
 using CoeurApi.SharedKernel.Exceptions;
 using CoeurApi.Application.Abstractions;
 using Moq;
 
 namespace CoeurApi.Tests.Modules.Users;
 
-public class GetUserByIdServiceTests
+public class GetUserByIdUseCaseTests
 {
     private readonly Mock<IUsersRepository> _repository = new();
     private readonly Mock<ICurrentUser> _currentUser = new();
 
-    private GetUserByIdService CreateService() => new(_repository.Object, _currentUser.Object);
+    private GetUserByIdUseCase CreateUseCase() => new(_repository.Object, _currentUser.Object);
 
     [Fact]
     public async Task ExecuteAsync_UsuarioTentandoAcessarOutroPerfil_DeveLancarForbidden()
@@ -20,9 +20,9 @@ public class GetUserByIdServiceTests
         _currentUser.Setup(c => c.Id).Returns(Guid.NewGuid());
         _currentUser.Setup(c => c.IsAdmin).Returns(false);
 
-        var service = CreateService();
+        var useCase = CreateUseCase();
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(Guid.NewGuid()));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(Guid.NewGuid()));
 
         Assert.Equal(403, ex.StatusCode);
     }
@@ -36,8 +36,8 @@ public class GetUserByIdServiceTests
         _repository.Setup(r => r.GetByIdAsync(targetUser.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(targetUser);
 
-        var service = CreateService();
-        var result = await service.ExecuteAsync(targetUser.Id);
+        var useCase = CreateUseCase();
+        var result = await useCase.ExecuteAsync(targetUser.Id);
 
         Assert.Equal(targetUser.Id, result.Id);
     }
@@ -50,9 +50,9 @@ public class GetUserByIdServiceTests
         _repository.Setup(r => r.GetByIdAsync(id, It.IsAny<CancellationToken>()))
             .ReturnsAsync((User?)null);
 
-        var service = CreateService();
+        var useCase = CreateUseCase();
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(id));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(id));
 
         Assert.Equal(404, ex.StatusCode);
     }

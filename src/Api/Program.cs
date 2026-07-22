@@ -5,7 +5,7 @@ using CoeurApi.Infrastructure;
 using CoeurApi.Infrastructure.Persistence;
 using CoeurApi.Modules.Authentication;
 using CoeurApi.Modules.Shopping;
-using CoeurApi.Modules.Users;
+using CoeurApi.Modules.Users.Infrastructure;
 using Scalar.AspNetCore;
 
 namespace CoeurApi.Api;

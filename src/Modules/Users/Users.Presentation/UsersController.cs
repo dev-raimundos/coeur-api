@@ -1,21 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
-using CoeurApi.Modules.Users.Application.DTOs;
-using CoeurApi.Modules.Users.Application.Services;
+using CoeurApi.Modules.Users.Application.UseCases;
 
 namespace CoeurApi.Modules.Users.Presentation;
 
 [ApiController]
 [Route("api/v1/users")]
 public class UsersController(
-    CreateUserService createUser,
-    GetUserByIdService getUserById,
-    UpdateUserService updateUser,
-    DeleteUserService deleteUser) : ControllerBase
+    CreateUserUseCase createUser,
+    GetUserByIdUseCase getUserById,
+    UpdateUserUseCase updateUser,
+    DeleteUserUseCase deleteUser) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<UserResponse>> Create([FromBody] CreateUserDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<UserResponse>> Create([FromBody] CreateUserRequest request,
+        CancellationToken cancellationToken)
     {
-        var user = await createUser.ExecuteAsync(dto, cancellationToken);
+        var user = await createUser.ExecuteAsync(request, cancellationToken);
         return Created($"api/v1/users/{user.Id}", user);
     }
 
@@ -29,9 +29,10 @@ public class UsersController(
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType<UserResponse>(StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserResponse>> Update(Guid id, [FromBody] UpdateUserDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<UserResponse>> Update(Guid id, [FromBody] UpdateUserRequest request,
+        CancellationToken cancellationToken)
     {
-        var user = await updateUser.ExecuteAsync(id, dto, cancellationToken);
+        var user = await updateUser.ExecuteAsync(id, request, cancellationToken);
         return Ok(user);
     }
 

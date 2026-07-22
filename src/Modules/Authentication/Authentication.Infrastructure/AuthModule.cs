@@ -3,8 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using CoeurApi.Modules.Authentication.Application.Abstractions;
-using CoeurApi.Modules.Authentication.Application.Services;
-using CoeurApi.Modules.Authentication.Application.Validators;
+using CoeurApi.Modules.Authentication.Application.UseCases;
 using CoeurApi.Modules.Authentication.Application.Settings;
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
 
@@ -18,8 +17,8 @@ public static class AuthModule
         var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()!;
 
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<LoginService>();
-        services.AddValidatorsFromAssemblyContaining<LoginDtoValidator>();
+        services.AddScoped<LoginUseCase>();
+        services.AddValidatorsFromAssemblyContaining<LoginValidator>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

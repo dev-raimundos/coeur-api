@@ -3,15 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using CoeurApi.Modules.Authentication.Application.DTOs;
-using CoeurApi.Modules.Authentication.Application.Services;
+using CoeurApi.Modules.Authentication.Application.UseCases;
 using CoeurApi.Modules.Authentication.Application.Settings;
 
 namespace CoeurApi.Modules.Authentication.Presentation;
 
 [ApiController]
 [Route("api/v1/auth")]
-public class AuthController(LoginService loginService, IOptions<JwtSettings> jwtSettings, IHostEnvironment environment) : ControllerBase
+public class AuthController(LoginUseCase login, IOptions<JwtSettings> jwtSettings, IHostEnvironment environment) : ControllerBase
 {
     [HttpPost("login")]
     [AllowAnonymous]
@@ -21,9 +20,9 @@ public class AuthController(LoginService loginService, IOptions<JwtSettings> jwt
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status429TooManyRequests)]
-    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-        var result = await loginService.ExecuteAsync(dto, cancellationToken);
+        var result = await login.ExecuteAsync(request, cancellationToken);
 
         var response = result.Response;
         var token = result.Token;

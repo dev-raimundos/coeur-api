@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CoeurApi.Application.Abstractions;
-using CoeurApi.Modules.Authentication.Application.DTOs;
+using CoeurApi.Modules.Authentication.Application.UseCases;
 
 namespace CoeurApi.Modules.Authentication.Presentation;
 

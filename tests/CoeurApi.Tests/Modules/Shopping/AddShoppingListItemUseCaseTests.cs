@@ -1,19 +1,18 @@
-using CoeurApi.Modules.Shopping.Application.DTOs;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists;
 using CoeurApi.Modules.Shopping.Domain;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
-using CoeurApi.Modules.Shopping.Application.Services.ShoppingLists;
 using CoeurApi.SharedKernel.Abstractions;
 using Moq;
 
 namespace CoeurApi.Tests.Modules.Shopping;
 
-public class AddShoppingListItemServiceTests
+public class AddShoppingListItemUseCaseTests
 {
     private readonly Mock<IShoppingListRepository> _repository = new();
     private readonly Mock<IUnitOfWork> _unitOfWork = new();
 
-    private AddShoppingListItemService CreateService()
-        => new(new GetOwnedShoppingListService(_repository.Object), _repository.Object, _unitOfWork.Object);
+    private AddShoppingListItemUseCase CreateUseCase()
+        => new(new GetOwnedShoppingListUseCase(_repository.Object), _repository.Object, _unitOfWork.Object);
 
     [Fact]
     public async Task ExecuteAsync_DeveAdicionarItemNaListaDoDono()
@@ -24,10 +23,10 @@ public class AddShoppingListItemServiceTests
         _repository.Setup(r => r.GetByIdWithItemsAsync(list.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(list);
 
-        var service = CreateService();
-        var dto = new AddListItemDto("Leite", 2, "un");
+        var useCase = CreateUseCase();
+        var request = new AddShoppingListItemRequest("Leite", 2, "un");
 
-        var result = await service.ExecuteAsync(list.Id, dto, ownerId);
+        var result = await useCase.ExecuteAsync(list.Id, request, ownerId);
 
         Assert.Equal("Leite", result.Name);
         Assert.Equal(2, result.Quantity);

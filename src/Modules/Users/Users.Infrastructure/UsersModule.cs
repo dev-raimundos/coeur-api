@@ -1,22 +1,20 @@
 using FluentValidation;
 using CoeurApi.Modules.Users.Application.Abstractions;
-using CoeurApi.Modules.Users.Application.Services;
-using CoeurApi.Modules.Users.Application.Validators;
-using CoeurApi.Modules.Users.Infrastructure;
+using CoeurApi.Modules.Users.Application.UseCases;
 
-namespace CoeurApi.Modules.Users;
+namespace CoeurApi.Modules.Users.Infrastructure;
 
 public static class UsersModule
 {
     public static IServiceCollection AddUsersModule(this IServiceCollection services)
     {
         services.AddScoped<IUsersRepository, UsersRepository>();
-        services.AddScoped<CreateUserService>();
-        services.AddScoped<GetUserByIdService>();
-        services.AddScoped<UpdateUserService>();
-        services.AddScoped<DeleteUserService>();
+        services.AddScoped<CreateUserUseCase>();
+        services.AddScoped<GetUserByIdUseCase>();
+        services.AddScoped<UpdateUserUseCase>();
+        services.AddScoped<DeleteUserUseCase>();
 
-        services.AddValidatorsFromAssemblyContaining<CreateUserDtoValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateUserValidator>();
 
         return services;
     }

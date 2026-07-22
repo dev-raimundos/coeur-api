@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CoeurApi.Modules.Shopping.Application.DTOs;
-using CoeurApi.Modules.Shopping.Application.Services.Products;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products;
 using CoeurApi.SharedKernel.Common;
 
 namespace CoeurApi.Modules.Shopping.Presentation;
@@ -9,11 +8,11 @@ namespace CoeurApi.Modules.Shopping.Presentation;
 [ApiController]
 [Route("api/v1/products")]
 public class ProductsController(
-    GetAllProductsService getAllProducts,
-    GetProductByIdService getProductById,
-    CreateProductService createProduct,
-    UpdateProductService updateProduct,
-    DeleteProductService deleteProduct) : ControllerBase
+    GetAllProductsUseCase getAllProducts,
+    GetProductByIdUseCase getProductById,
+    CreateProductUseCase createProduct,
+    UpdateProductUseCase updateProduct,
+    DeleteProductUseCase deleteProduct) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType<PagedResult<ProductResponse>>(StatusCodes.Status200OK)]
@@ -45,9 +44,9 @@ public class ProductsController(
     [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<ProductResponse>> Create([FromBody] CreateProductDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<ProductResponse>> Create([FromBody] CreateProductRequest request, CancellationToken cancellationToken)
     {
-        var product = await createProduct.ExecuteAsync(dto, cancellationToken);
+        var product = await createProduct.ExecuteAsync(request, cancellationToken);
         return Created($"api/v1/products/{product.Id}", product);
     }
 
@@ -58,9 +57,9 @@ public class ProductsController(
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ProductResponse>> Update(Guid id, [FromBody] UpdateProductDto dto, CancellationToken cancellationToken)
+    public async Task<ActionResult<ProductResponse>> Update(Guid id, [FromBody] UpdateProductRequest request, CancellationToken cancellationToken)
     {
-        var product = await updateProduct.ExecuteAsync(id, dto, cancellationToken);
+        var product = await updateProduct.ExecuteAsync(id, request, cancellationToken);
         return Ok(product);
     }
 

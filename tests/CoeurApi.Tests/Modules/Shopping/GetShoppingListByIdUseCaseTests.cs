@@ -1,16 +1,16 @@
 using CoeurApi.Modules.Shopping.Domain;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
-using CoeurApi.Modules.Shopping.Application.Services.ShoppingLists;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists;
 using CoeurApi.SharedKernel.Exceptions;
 using Moq;
 
 namespace CoeurApi.Tests.Modules.Shopping;
 
-public class GetShoppingListByIdServiceTests
+public class GetShoppingListByIdUseCaseTests
 {
     private readonly Mock<IShoppingListRepository> _repository = new();
 
-    private GetShoppingListByIdService CreateService() => new(new GetOwnedShoppingListService(_repository.Object));
+    private GetShoppingListByIdUseCase CreateUseCase() => new(new GetOwnedShoppingListUseCase(_repository.Object));
 
     [Fact]
     public async Task ExecuteAsync_ListaDeOutroDono_DeveLancarForbidden()
@@ -19,9 +19,9 @@ public class GetShoppingListByIdServiceTests
         _repository.Setup(r => r.GetByIdWithItemsAsync(list.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(list);
 
-        var service = CreateService();
+        var useCase = CreateUseCase();
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(list.Id, Guid.NewGuid()));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(list.Id, Guid.NewGuid()));
 
         Assert.Equal(403, ex.StatusCode);
     }
@@ -32,9 +32,9 @@ public class GetShoppingListByIdServiceTests
         _repository.Setup(r => r.GetByIdWithItemsAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((ShoppingList?)null);
 
-        var service = CreateService();
+        var useCase = CreateUseCase();
 
-        var ex = await Assert.ThrowsAsync<HttpException>(() => service.ExecuteAsync(Guid.NewGuid(), Guid.NewGuid()));
+        var ex = await Assert.ThrowsAsync<HttpException>(() => useCase.ExecuteAsync(Guid.NewGuid(), Guid.NewGuid()));
 
         Assert.Equal(404, ex.StatusCode);
     }
