@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using CoeurApi.Modules.Shopping.Domain;
-using CoeurApi.Modules.Shopping.Infrastructure.Persistence;
+using CoeurApi.Modules.Shopping.Infrastructure.Persistence.Configurations;
 using CoeurApi.Modules.Users.Domain;
-using CoeurApi.Modules.Users.Infrastructure.Persistence;
+using CoeurApi.Modules.Users.Infrastructure.Persistence.Configurations;
 using CoeurApi.SharedKernel.Abstractions;
 
 namespace CoeurApi.Infrastructure.Persistence;

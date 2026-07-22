@@ -1,6 +1,6 @@
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
 using CoeurApi.Modules.Authentication.Application.Settings;
-using CoeurApi.Modules.Authentication.Application.UseCases;
+using CoeurApi.Modules.Authentication.Application.UseCases.Login;
 using CoeurApi.Modules.Users.Domain;
 using CoeurApi.SharedKernel.Exceptions;
 using CoeurApi.Modules.Users.Application.Abstractions;

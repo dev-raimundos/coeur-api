@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CoeurApi.Modules.Shopping.Application.UseCases.Products;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Create;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Delete;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.GetAll;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.GetById;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Update;
 using CoeurApi.SharedKernel.Common;
 
 namespace CoeurApi.Modules.Shopping.Presentation;

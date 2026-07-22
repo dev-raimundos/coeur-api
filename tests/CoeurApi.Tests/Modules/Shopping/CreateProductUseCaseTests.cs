@@ -1,4 +1,4 @@
-using CoeurApi.Modules.Shopping.Application.UseCases.Products;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Create;
 using CoeurApi.Modules.Shopping.Domain;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
 using CoeurApi.SharedKernel.Abstractions;

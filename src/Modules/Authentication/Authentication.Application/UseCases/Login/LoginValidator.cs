@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace CoeurApi.Modules.Authentication.Application.UseCases;
+namespace CoeurApi.Modules.Authentication.Application.UseCases.Login;
 
 public class LoginValidator : AbstractValidator<LoginRequest>
 {

@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using CoeurApi.Modules.Users.Application.UseCases;
+using CoeurApi.Modules.Users.Application.UseCases.Create;
+using CoeurApi.Modules.Users.Application.UseCases.Delete;
+using CoeurApi.Modules.Users.Application.UseCases.GetById;
+using CoeurApi.Modules.Users.Application.UseCases.Update;
 
 namespace CoeurApi.Modules.Users.Presentation;
 

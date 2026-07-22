@@ -1,6 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using CoeurApi.Application.Abstractions;
 using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.AddItem;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Create;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Delete;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetAll;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetById;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.RemoveItem;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Update;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.UpdateItem;
 using CoeurApi.SharedKernel.Common;
 
 namespace CoeurApi.Modules.Shopping.Presentation;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using CoeurApi.Modules.Authentication.Application.UseCases;
+using CoeurApi.Modules.Authentication.Application.UseCases.Login;
 using CoeurApi.Modules.Authentication.Application.Settings;
 
 namespace CoeurApi.Modules.Authentication.Presentation;

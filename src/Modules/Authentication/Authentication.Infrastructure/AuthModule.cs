@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using CoeurApi.Modules.Authentication.Application.Abstractions;
-using CoeurApi.Modules.Authentication.Application.UseCases;
+using CoeurApi.Modules.Authentication.Application.UseCases.Login;
 using CoeurApi.Modules.Authentication.Application.Settings;
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
 

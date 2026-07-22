@@ -1,6 +1,6 @@
 using CoeurApi.Modules.Shopping.Domain;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
-using CoeurApi.Modules.Shopping.Application.UseCases.Products;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.GetAll;
 using Moq;
 
 namespace CoeurApi.Tests.Modules.Shopping;

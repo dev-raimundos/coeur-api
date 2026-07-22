@@ -1,4 +1,4 @@
-using CoeurApi.Modules.Users.Application.UseCases;
+using CoeurApi.Modules.Users.Application.UseCases.Create;
 using CoeurApi.Modules.Users.Domain;
 using CoeurApi.SharedKernel.Exceptions;
 using CoeurApi.Modules.Users.Application.Abstractions;

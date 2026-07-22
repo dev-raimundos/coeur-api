@@ -4,7 +4,7 @@ using CoeurApi.Modules.Users.Application.UseCases;
 using CoeurApi.SharedKernel.Abstractions;
 using CoeurApi.SharedKernel.Exceptions;
 
-namespace CoeurApi.Modules.Authentication.Application.UseCases;
+namespace CoeurApi.Modules.Authentication.Application.UseCases.Login;
 
 public class LoginUseCase(IUsersRepository repository, ITokenService tokenService, IUnitOfWork unitOfWork)
 {

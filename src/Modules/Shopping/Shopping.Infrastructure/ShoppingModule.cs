@@ -1,7 +1,19 @@
 using FluentValidation;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
-using CoeurApi.Modules.Shopping.Application.UseCases.Products;
-using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Create;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Delete;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.GetAll;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.GetById;
+using CoeurApi.Modules.Shopping.Application.UseCases.Products.Update;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.AddItem;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Create;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Delete;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetAll;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetById;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetOwned;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.RemoveItem;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Update;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.UpdateItem;
 using CoeurApi.Modules.Shopping.Infrastructure;
 
 namespace CoeurApi.Modules.Shopping;

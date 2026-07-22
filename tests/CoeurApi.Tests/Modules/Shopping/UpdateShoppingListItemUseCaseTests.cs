@@ -1,4 +1,5 @@
-using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetOwned;
+using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.UpdateItem;
 using CoeurApi.Modules.Shopping.Domain;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
 using CoeurApi.SharedKernel.Exceptions;
