@@ -1,12 +1,12 @@
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
 using CoeurApi.Modules.Authentication.Application.Settings;
 using CoeurApi.Modules.Authentication.Application.UseCases.Login;
-using CoeurApi.Modules.Users.Domain;
 using CoeurApi.SharedKernel.Exceptions;
 using CoeurApi.Modules.Users.Application.Abstractions;
 using CoeurApi.SharedKernel.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
+using CoeurApi.Modules.Users.Domain.Model;
 
 namespace CoeurApi.Tests.Modules.Authentication;
 

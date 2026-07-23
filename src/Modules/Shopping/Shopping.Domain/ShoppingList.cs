@@ -1,4 +1,4 @@
-using CoeurApi.Modules.Users.Domain;
+using CoeurApi.Modules.Users.Domain.Model;
 
 namespace CoeurApi.Modules.Shopping.Domain;
 

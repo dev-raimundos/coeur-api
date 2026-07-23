@@ -4,8 +4,9 @@ using CoeurApi.Modules.Users.Application.UseCases.Create;
 using CoeurApi.Modules.Users.Application.UseCases.Delete;
 using CoeurApi.Modules.Users.Application.UseCases.GetById;
 using CoeurApi.Modules.Users.Application.UseCases.Update;
+using CoeurApi.Modules.Users.Infrastructure.Repository;
 
-namespace CoeurApi.Modules.Users.Infrastructure;
+namespace CoeurApi.Modules.Users.Infrastructure.Module;
 
 public static class UsersModule
 {

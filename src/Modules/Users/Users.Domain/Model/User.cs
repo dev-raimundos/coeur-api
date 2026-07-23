@@ -1,6 +1,6 @@
 using CoeurApi.SharedKernel.Enums;
 
-namespace CoeurApi.Modules.Users.Domain;
+namespace CoeurApi.Modules.Users.Domain.Model;
 
 public class User
 {

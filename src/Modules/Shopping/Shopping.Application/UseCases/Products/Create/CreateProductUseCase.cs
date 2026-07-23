@@ -1,5 +1,4 @@
 using CoeurApi.Modules.Shopping.Application.Abstractions;
-using CoeurApi.Modules.Shopping.Application.UseCases.Products;
 using CoeurApi.Modules.Shopping.Domain;
 using CoeurApi.SharedKernel.Abstractions;
 

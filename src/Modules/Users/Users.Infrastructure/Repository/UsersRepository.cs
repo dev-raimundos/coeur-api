@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using CoeurApi.Modules.Users.Application.Abstractions;
-using CoeurApi.Modules.Users.Domain;
+using CoeurApi.Modules.Users.Domain.Model;
 
-namespace CoeurApi.Modules.Users.Infrastructure;
+namespace CoeurApi.Modules.Users.Infrastructure.Repository;
 
 public class UsersRepository(DbContext context) : IUsersRepository
 {

@@ -1,9 +1,9 @@
 using CoeurApi.Modules.Users.Application.Abstractions;
-using CoeurApi.Modules.Users.Domain;
 using CoeurApi.Modules.Users.Application.UseCases.GetById;
 using CoeurApi.SharedKernel.Exceptions;
 using CoeurApi.Application.Abstractions;
 using Moq;
+using CoeurApi.Modules.Users.Domain.Model;
 
 namespace CoeurApi.Tests.Modules.Users;
 
