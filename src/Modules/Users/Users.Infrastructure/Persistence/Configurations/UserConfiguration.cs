@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using CoeurApi.SharedKernel.Enums;
-using CoeurApi.Modules.Users.Domain.Model;
+using CoeurApi.Modules.Users.Domain;
 
 namespace CoeurApi.Modules.Users.Infrastructure.Persistence.Configurations;
 

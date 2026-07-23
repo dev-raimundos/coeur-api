@@ -7,7 +7,7 @@ using CoeurApi.Modules.Authentication.Application.UseCases.Login;
 using CoeurApi.Modules.Authentication.Application.Settings;
 using CoeurApi.Modules.Authentication.Infrastructure.Security;
 
-namespace CoeurApi.Modules.Authentication;
+namespace CoeurApi.Modules.Authentication.Infrastructure.Module;
 
 public static class AuthModule
 {

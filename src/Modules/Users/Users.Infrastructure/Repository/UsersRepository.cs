@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CoeurApi.Modules.Users.Application.Abstractions;
-using CoeurApi.Modules.Users.Domain.Model;
+using CoeurApi.Modules.Users.Domain;
 
 namespace CoeurApi.Modules.Users.Infrastructure.Repository;
 

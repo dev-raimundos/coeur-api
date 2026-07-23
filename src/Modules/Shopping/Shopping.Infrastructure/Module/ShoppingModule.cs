@@ -14,9 +14,9 @@ using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.GetOwned;
 using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.RemoveItem;
 using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Update;
 using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.UpdateItem;
-using CoeurApi.Modules.Shopping.Infrastructure;
+using CoeurApi.Modules.Shopping.Infrastructure.Repository;
 
-namespace CoeurApi.Modules.Shopping;
+namespace CoeurApi.Modules.Shopping.Infrastructure.Module;
 
 public static class ShoppingModule
 {

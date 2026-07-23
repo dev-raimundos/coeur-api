@@ -1,4 +1,4 @@
-using CoeurApi.Modules.Users.Domain.Model;
+using CoeurApi.Modules.Users.Domain;
 
 namespace CoeurApi.Modules.Authentication.Application.Abstractions;
 

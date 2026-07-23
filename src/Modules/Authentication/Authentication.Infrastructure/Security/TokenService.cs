@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using CoeurApi.Modules.Authentication.Application.Abstractions;
 using CoeurApi.Modules.Authentication.Application.Settings;
-using CoeurApi.Modules.Users.Domain.Model;
+using CoeurApi.Modules.Users.Domain;
 
 namespace CoeurApi.Modules.Authentication.Infrastructure.Security;
 

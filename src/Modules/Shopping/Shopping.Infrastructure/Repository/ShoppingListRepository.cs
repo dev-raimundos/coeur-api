@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using CoeurApi.Modules.Shopping.Application.Abstractions;
 using CoeurApi.Modules.Shopping.Domain;
 
-namespace CoeurApi.Modules.Shopping.Infrastructure;
+namespace CoeurApi.Modules.Shopping.Infrastructure.Repository;
 
 public class ShoppingListRepository(DbContext context) : IShoppingListRepository
 {

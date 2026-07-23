@@ -11,7 +11,7 @@ using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.Update;
 using CoeurApi.Modules.Shopping.Application.UseCases.ShoppingLists.UpdateItem;
 using CoeurApi.SharedKernel.Common;
 
-namespace CoeurApi.Modules.Shopping.Presentation;
+namespace CoeurApi.Modules.Shopping.Presentation.Controller;
 
 [ApiController]
 [Route("api/v1/shopping-lists")]

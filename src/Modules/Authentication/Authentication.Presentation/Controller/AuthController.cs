@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using CoeurApi.Modules.Authentication.Application.UseCases.Login;
 using CoeurApi.Modules.Authentication.Application.Settings;
 
-namespace CoeurApi.Modules.Authentication.Presentation;
+namespace CoeurApi.Modules.Authentication.Presentation.Controller;
 
 [ApiController]
 [Route("api/v1/auth")]

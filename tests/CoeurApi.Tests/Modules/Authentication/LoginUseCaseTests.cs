@@ -6,7 +6,7 @@ using CoeurApi.Modules.Users.Application.Abstractions;
 using CoeurApi.SharedKernel.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
-using CoeurApi.Modules.Users.Domain.Model;
+using CoeurApi.Modules.Users.Domain;
 
 namespace CoeurApi.Tests.Modules.Authentication;
 

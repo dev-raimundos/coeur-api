@@ -8,7 +8,7 @@ using CoeurApi.Modules.Shopping.Application.UseCases.Products.GetById;
 using CoeurApi.Modules.Shopping.Application.UseCases.Products.Update;
 using CoeurApi.SharedKernel.Common;
 
-namespace CoeurApi.Modules.Shopping.Presentation;
+namespace CoeurApi.Modules.Shopping.Presentation.Controller;
 
 [ApiController]
 [Route("api/v1/products")]

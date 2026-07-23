@@ -1,6 +1,6 @@
 using CoeurApi.Modules.Users.Application.Abstractions;
 using CoeurApi.Modules.Users.Application.UseCases;
-using CoeurApi.Modules.Users.Domain.Model;
+using CoeurApi.Modules.Users.Domain;
 using CoeurApi.SharedKernel.Abstractions;
 using CoeurApi.SharedKernel.Exceptions;
 

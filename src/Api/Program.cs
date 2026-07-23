@@ -3,10 +3,10 @@ using CoeurApi.Api.Extensions;
 using CoeurApi.Api.Pages;
 using CoeurApi.Infrastructure;
 using CoeurApi.Infrastructure.Persistence;
-using CoeurApi.Modules.Authentication;
-using CoeurApi.Modules.Shopping;
 using Scalar.AspNetCore;
 using CoeurApi.Modules.Users.Infrastructure.Module;
+using CoeurApi.Modules.Shopping.Infrastructure.Module;
+using CoeurApi.Modules.Authentication.Infrastructure.Module;
 
 namespace CoeurApi.Api;
 
